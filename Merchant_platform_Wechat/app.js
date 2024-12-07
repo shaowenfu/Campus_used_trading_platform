@@ -1,7 +1,7 @@
 // app.js
 App({
   globalData: {
-    baseUrl: 'http://localhost:8080', // 开发环境
+    baseUrl: 'http://localhost:8081', // 开发环境
     // baseUrl: 'https://api.example.com', // 生产环境
   },
   onLaunch() {

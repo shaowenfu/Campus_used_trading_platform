@@ -1,6 +1,6 @@
 // pages/goods/list/list.js
 import { isDev, mockData } from '../../../utils/config'
-
+import { request } from '../../../utils/request'
 Page({
   data: {
     goodsList: [],
@@ -28,15 +28,15 @@ Page({
 
   // 获取商品分类
   async getCategories() {
-    if(isDev) {
-      this.setData({
-        categories: mockData.goods.categories
-      })
-      return
-    }
-
     try {
-      const res = await wx.request({
+      if(isDev) {
+        this.setData({
+          categories: mockData.goods.categories
+        })
+        return
+      }
+
+      const res = await request({
         url: '/marketer/category/list',
         method: 'GET'
       })
@@ -66,7 +66,7 @@ Page({
         return
       }
 
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/thing/page',
         method: 'GET',
         data: this.data.queryParams
@@ -123,7 +123,7 @@ Page({
     const newStatus = status === 1 ? 0 : 1
     
     try {
-      const res = await wx.request({
+      const res = await request({
         url: `/marketer/thing/status/${id}/${newStatus}`,
         method: 'PUT'
       })

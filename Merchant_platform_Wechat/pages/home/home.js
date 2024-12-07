@@ -1,5 +1,5 @@
 import { isDev, mockData } from '../../utils/config'
-
+import { request } from '../../utils/request'
 Page({
   data: {
     businessData: {}, // 运营数据
@@ -23,7 +23,7 @@ Page({
         return
       }
 
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/workspace/businessData',
         method: 'GET'
       })
@@ -48,7 +48,7 @@ Page({
         return
       }
 
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/workspace/overviewDishes',
         method: 'GET'
       })
@@ -64,7 +64,6 @@ Page({
   },
 
   // 获取订单总览
-
   async getOrderOverview() {
     try {
       if(isDev) {
@@ -74,7 +73,7 @@ Page({
         return
       }
 
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/workspace/overviewOrders', 
         method: 'GET'
       })
@@ -102,12 +101,12 @@ Page({
     const type = e.currentTarget.dataset.type
     switch(type) {
       case 'order':
-        wx.navigateTo({
+        wx.switchTab({
           url: '/pages/order/list/list'
         })
         break
       case 'goods':
-        wx.navigateTo({
+        wx.switchTab({
           url: '/pages/goods/list/list'
         })
         break

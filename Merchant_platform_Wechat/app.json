@@ -8,10 +8,10 @@
     "pages/goods/add/add",
     "pages/goods/edit/edit",
     "pages/statistics/statistics",
-    "pages/profile/profile",
-    "pages/profile/info/info",
-    "pages/profile/security/security",
-    "pages/profile/about/about"
+    "pages/profile_page/profile/profile",
+    "pages/profile_page/info/info",
+    "pages/profile_page/secu/secu",
+    "pages/profile_page/about/about"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -44,7 +44,7 @@
         "selectedIconPath": "images/goods-active.png"
       },
       {
-        "pagePath": "pages/profile/profile",
+        "pagePath": "pages/profile_page/profile/profile",
         "text": "我的",
         "iconPath": "images/profile.png",
         "selectedIconPath": "images/profile-active.png"

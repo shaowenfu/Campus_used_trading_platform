@@ -1,5 +1,6 @@
 // pages/goods/add/add.js
 import { isDev, mockData } from '../../../utils/config'
+import { request } from '../../../utils/request'
 
 Page({
   data: {
@@ -30,7 +31,7 @@ Page({
     }
 
     try {
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/category/list',
         method: 'GET'
       })
@@ -186,7 +187,7 @@ Page({
         return
       }
 
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/thing',
         method: 'POST',
         data: this.data.formData

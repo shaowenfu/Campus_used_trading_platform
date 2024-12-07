@@ -7,12 +7,14 @@ export const request = (options) => {
       ...options,
       url: `${app.globalData.baseUrl}${options.url}`,
       success: (res) => {
-          console.log("start1");
+          console.log( `发送请求URL:${options.url}`);
+          console.log("     这里是回调函数");
         if(res.data.code === 1) {
-            console.log("start2");
+            console.log("     这里是当res.data.code ===1,请求成功");
+            console.log(`"     请求结果：${res.data}"`)
           resolve(res.data)
         } else {
-            console.log("start3");
+            console.log("     这里是当res.data.code === 0,请求失败");
           reject(res.data)
           wx.showToast({
             title: res.data.msg || '请求失败',

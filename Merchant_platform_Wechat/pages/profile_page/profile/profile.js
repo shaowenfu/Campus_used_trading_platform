@@ -1,6 +1,6 @@
 // pages/profile/profile.js
-import { isDev, mockData } from '../../utils/config'
-
+import { isDev, mockData } from '../../../utils/config'
+import { request } from '../../../utils/request'
 Page({
   data: {
     userInfo: null,
@@ -8,17 +8,17 @@ Page({
       {
         icon: '/images/icon-info.png',
         text: '基本信息',
-        url: '/pages/profile/info/info'
+        url: '/pages/profile_page/info/info'
       },
       {
         icon: '/images/icon-security.png',
         text: '账号安全',
-        url: '/pages/profile/security/security'
+        url: '/pages/profile_page/secu/secu'
       },
       {
         icon: '/images/icon-about.png',
         text: '关于我们',
-        url: '/pages/profile/about/about'
+        url: '/pages/profile_page/about/about'
       }
     ]
   },
@@ -37,7 +37,7 @@ Page({
         return
       }
 
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/info',
         method: 'GET'
       })

@@ -1,4 +1,5 @@
 import { isDev } from '../../../utils/config'
+import { request } from '../../../utils/request'
 
 Page({
   data: {
@@ -81,7 +82,7 @@ Page({
         return
       }
 
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/password',
         method: 'PUT',
         data: {
@@ -90,22 +91,13 @@ Page({
         }
       })
       
-      if(res.data.code === 0) {
-        wx.showToast({ title: '修改成功' })
-        setTimeout(() => {
-          wx.navigateBack()
-        }, 1500)
-      } else {
-        wx.showToast({
-          title: res.data.msg,
-          icon: 'none'
-        })
-      }
-    } catch(e) {
-      wx.showToast({
-        title: '修改失败',
-        icon: 'none'
-      })
+      wx.showToast({ title: '修改成功' })
+      setTimeout(() => {
+        wx.navigateBack()
+      }, 1500)
+      
+    } catch (error) {
+      // 错误处理已在request封装中完成
     } finally {
       this.setData({ submitLoading: false })
     }

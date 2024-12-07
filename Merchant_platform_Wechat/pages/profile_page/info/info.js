@@ -1,5 +1,7 @@
 const app = getApp()
 
+import { request } from '../../../utils/request'
+
 Page({
   data: {
     formData: {
@@ -78,45 +80,35 @@ Page({
   },
 
   // 提交表单
-  submitForm() {
+  async submitForm() {
     if(!this.validateForm()) return
     if(this.data.submitLoading) return
     
     this.setData({ submitLoading: true })
     
-    wx.request({
-      url: `${app.globalData.baseUrl}/marketer/info`,
-      method: 'PUT',
-      data: this.data.formData,
-      success: (res) => {
-        if(res.data.code === 0) {
-          // 更新缓存
-          const userInfo = wx.getStorageSync('userInfo') || {}
-          wx.setStorageSync('userInfo', {
-            ...userInfo,
-            ...this.data.formData
-          })
-          
-          wx.showToast({ title: '修改成功' })
-          setTimeout(() => {
-            wx.navigateBack()
-          }, 1500)
-        } else {
-          wx.showToast({
-            title: res.data.msg || '修改失败',
-            icon: 'none'
-          })
-        }
-      },
-      fail: () => {
-        wx.showToast({
-          title: '修改失败',
-          icon: 'none'
-        })
-      },
-      complete: () => {
-        this.setData({ submitLoading: false })
-      }
-    })
+    try {
+      const res = await request({
+        url: '/marketer/info',
+        method: 'PUT',
+        data: this.data.formData
+      })
+      
+      // 更新缓存
+      const userInfo = wx.getStorageSync('userInfo') || {}
+      wx.setStorageSync('userInfo', {
+        ...userInfo,
+        ...this.data.formData
+      })
+      
+      wx.showToast({ title: '修改成功' })
+      setTimeout(() => {
+        wx.navigateBack()
+      }, 1500)
+      
+    } catch (error) {
+      // 错误处理已在request封装中完成
+    } finally {
+      this.setData({ submitLoading: false })
+    }
   }
 }) 

@@ -1,5 +1,6 @@
 // pages/order/list/list.js
 import { isDev, mockData } from '../../../utils/config'
+import { request } from '../../../utils/request'
 
 Page({
 
@@ -113,7 +114,7 @@ Page({
         return
       }
 
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/order/statistics',
         method: 'GET'
       })
@@ -144,7 +145,7 @@ Page({
         return
       }
 
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/order/conditionSearch',
         method: 'GET',
         data: this.data.queryParams
@@ -221,7 +222,7 @@ Page({
   async confirmOrder(e) {
     const orderId = e.currentTarget.dataset.id
     try {
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/order/confirm',
         method: 'PUT',
         data: { id: orderId }
@@ -249,7 +250,7 @@ Page({
   async completeOrder(e) {
     const orderId = e.currentTarget.dataset.id
     try {
-      const res = await wx.request({
+      const res = await request({
         url: `/marketer/order/complete/${orderId}`,
         method: 'PUT'
       })
@@ -285,7 +286,7 @@ Page({
     if(!cancelReason) return
     
     try {
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/order/cancel',
         method: 'PUT',
         data: {

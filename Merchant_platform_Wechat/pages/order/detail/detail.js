@@ -1,5 +1,6 @@
 // pages/order/detail/detail.js
 import { isDev, mockData } from '../../../utils/config'
+import { request } from '../../../utils/request'
 
 Page({
   data: {
@@ -29,7 +30,7 @@ Page({
         return
       }
 
-      const res = await wx.request({
+      const res = await request({
         url: `/marketer/order/details/${this.data.orderId}`,
         method: 'GET'
       })
@@ -57,7 +58,7 @@ Page({
   // 接单
   async confirmOrder() {
     try {
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/order/confirm',
         method: 'PUT',
         data: { id: this.data.orderId }
@@ -83,7 +84,7 @@ Page({
   // 完成订单
   async completeOrder() {
     try {
-      const res = await wx.request({
+      const res = await request({
         url: `/marketer/order/complete/${this.data.orderId}`,
         method: 'PUT'
       })
@@ -116,7 +117,7 @@ Page({
     if(!cancelReason) return
     
     try {
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/order/cancel',
         method: 'PUT',
         data: {
@@ -146,6 +147,12 @@ Page({
   makePhoneCall() {
     wx.makePhoneCall({
       phoneNumber: this.data.orderDetail.phone
+    })
+  },
+
+  goToList() {
+    wx.navigateBack({
+      delta: 1
     })
   }
 })

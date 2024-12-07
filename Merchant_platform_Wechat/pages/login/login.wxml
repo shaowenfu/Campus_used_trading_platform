@@ -32,8 +32,9 @@
   
      <!-- 注册 和忘记密码  -->
      <view class="zhuce">
-       <navigator url="/pages/register/register">立即注册</navigator>
-       <navigator url="/pages/forget-password/forget-password">忘记密码?</navigator>
+       <!-- 暂时注释掉未实现的页面 -->
+       <text>立即注册</text>
+       <text>忘记密码?</text>
      </view>
   
      <!-- 登录按钮 -->
