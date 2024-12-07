@@ -1,3 +1,6 @@
+const app = getApp()
+export const baseUrl = app.globalData.baseUrl
+
 export const isDev = true // 开发模式标志
 
 // 示例数据

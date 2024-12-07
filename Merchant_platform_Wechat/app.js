@@ -1,5 +1,9 @@
 // app.js
 App({
+  globalData: {
+    baseUrl: 'http://localhost:8080', // 开发环境
+    // baseUrl: 'https://api.example.com', // 生产环境
+  },
   onLaunch() {
     // 展示本地存储能力
     const logs = wx.getStorageSync('logs') || []
@@ -12,8 +16,10 @@ App({
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
       }
     })
-  },
-  globalData: {
-    userInfo: null
+
+    // 可以在这里根据环境动态设置baseUrl
+    if(process.env.NODE_ENV === 'production') {
+      this.globalData.baseUrl = 'https://api.example.com'
+    }
   }
 })

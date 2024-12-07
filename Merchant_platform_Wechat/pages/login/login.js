@@ -1,10 +1,14 @@
+import { request } from '../../utils/request'
+
+const app = getApp()
+
 Page({
   data: {
     username: '',
     password: '',
     isPasswordVisible: false,
     isAgreeProtocol: false,
-    isDev: true  // 开发模式标志
+    isDev: false  // 开发模式标志
   },
 
   // 输入用户名
@@ -80,7 +84,7 @@ Page({
     }
 
     try {
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/login',
         method: 'POST',
         data: {
@@ -90,23 +94,16 @@ Page({
         }
       })
 
-      if(res.data.code === 0) {
-        wx.setStorageSync('token', res.data.data.token)
-        wx.setStorageSync('userInfo', res.data.data)
-        
-        wx.showToast({
-          title: '登录成功'
-        })
-        
-        wx.reLaunch({
-          url: '/pages/home/home'
-        })
-      } else {
-        wx.showToast({
-          title: res.data.msg,
-          icon: 'none'
-        })
-      }
+      wx.setStorageSync('token', res.data.token)
+      wx.setStorageSync('userInfo', res.data)
+      
+      wx.showToast({
+        title: '登录成功'
+      })
+      
+      wx.reLaunch({
+        url: '/pages/home/home'
+      })
     } catch(e) {
       wx.showToast({
         title: '登录失败',
@@ -142,7 +139,7 @@ Page({
         desc: '用于完善用户资料'
       })
       
-      const res = await wx.request({
+      const res = await request({
         url: '/marketer/login',
         method: 'POST',
         data: {
@@ -152,23 +149,16 @@ Page({
         }
       })
 
-      if(res.data.code === 0) {
-        wx.setStorageSync('token', res.data.data.token)
-        wx.setStorageSync('userInfo', res.data.data)
-        
-        wx.showToast({
-          title: '登录成功'
-        })
-        
-        wx.reLaunch({
-          url: '/pages/home/home'
-        })
-      } else {
-        wx.showToast({
-          title: res.data.msg,
-          icon: 'none'
-        })
-      }
+      wx.setStorageSync('token', res.data.token)
+      wx.setStorageSync('userInfo', res.data)
+      
+      wx.showToast({
+        title: '登录成功'
+      })
+      
+      wx.reLaunch({
+        url: '/pages/home/home'
+      })
     } catch(e) {
       if(e.errMsg.includes('getUserProfile:fail')) {
         wx.showToast({

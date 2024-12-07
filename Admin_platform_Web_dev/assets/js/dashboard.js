@@ -86,4 +86,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 初始加载概览数据
     loadOverviewData();
+
+    // 添加快捷操作按钮的点击处理
+    const quickActions = document.querySelector('.quick-actions');
+    quickActions.addEventListener('click', (e) => {
+        const actionBtn = e.target.closest('.action-btn');
+        if (!actionBtn) return;
+
+        const targetPage = actionBtn.dataset.page;
+        if (!targetPage) return;
+
+        // 切换到目标页面
+        const targetLink = sidebar.querySelector(`a[data-page="${targetPage}"]`);
+        if (targetLink) {
+            // 更新活动状态
+            sidebar.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+            targetLink.parentElement.classList.add('active');
+            
+            // 更新面包屑
+            breadcrumb.textContent = targetLink.querySelector('span').textContent;
+            
+            // 切换页面显示
+            content.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(targetPage).classList.add('active');
+
+            // 根据不同的快捷操作执行相应的功能
+            switch (targetPage) {
+                case 'merchant':
+                    // 直接打开新增商家模态框
+                    if (merchantManager) {
+                        merchantManager.showMerchantModal();
+                    }
+                    break;
+                case 'product':
+                    // 加载商品列表
+                    if (productManager) {
+                        productManager.loadProductList();
+                    }
+                    break;
+                case 'order':
+                    // 加载订单列表
+                    if (orderManager) {
+                        orderManager.loadOrderList();
+                    }
+                    break;
+                case 'news':
+                    // 直接打开新增新闻模态框
+                    if (newsManager) {
+                        newsManager.showNewsModal();
+                    }
+                    break;
+            }
+        }
+    });
 }); 
