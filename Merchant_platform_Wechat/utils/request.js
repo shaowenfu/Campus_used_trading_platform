@@ -7,9 +7,12 @@ export const request = (options) => {
       ...options,
       url: `${app.globalData.baseUrl}${options.url}`,
       success: (res) => {
-        if(res.data.code === 0) {
+          console.log("start1");
+        if(res.data.code === 1) {
+            console.log("start2");
           resolve(res.data)
         } else {
+            console.log("start3");
           reject(res.data)
           wx.showToast({
             title: res.data.msg || '请求失败',
