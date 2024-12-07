@@ -1,0 +1,92 @@
+<!--pages/goods/list/list.wxml-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <input 
+        type="text" 
+        placeholder="输入商品名称搜索"
+        confirm-type="search"
+        bindconfirm="onSearch"
+      />
+      <icon class="search-icon" type="search" size="16"></icon>
+    </view>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <picker 
+      mode="selector" 
+      range="{{categories}}" 
+      range-key="name"
+      bindchange="onCategoryChange"
+    >
+      <view class="filter-item">
+        <text>分类</text>
+        <text class="arrow">></text>
+      </view>
+    </picker>
+
+    <picker 
+      mode="selector" 
+      range="{{statusOptions}}" 
+      range-key="text"
+      bindchange="onStatusChange"
+    >
+      <view class="filter-item">
+        <text>状态</text>
+        <text class="arrow">></text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 商品列表 -->
+  <view class="goods-list">
+    <view 
+      class="goods-item"
+      wx:for="{{goodsList}}"
+      wx:key="id"
+    >
+      <image class="goods-img" src="{{item.image}}" mode="aspectFill"/>
+      <view class="goods-info">
+        <view class="goods-name">{{item.name}}</view>
+        <view class="goods-category">{{item.categoryName}}</view>
+        <view class="goods-price">¥{{item.price}}</view>
+        <view class="goods-stock">库存: {{item.amount}}</view>
+      </view>
+      <view class="goods-actions">
+        <button 
+          class="btn {{item.status === 1 ? 'btn-warning' : 'btn-primary'}}" 
+          size="mini"
+          bindtap="toggleStatus"
+          data-id="{{item.id}}"
+          data-status="{{item.status}}"
+        >
+          {{item.status === 1 ? '下架' : '上架'}}
+        </button>
+        <button 
+          class="btn btn-primary" 
+          size="mini"
+          bindtap="goToEdit"
+          data-id="{{item.id}}"
+        >
+          编辑
+        </button>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading" wx:if="{{loading}}">加载中...</view>
+    <view class="no-more" wx:if="{{goodsList.length >= total && goodsList.length > 0}}">
+      没有更多商品了
+    </view>
+    <view class="empty" wx:if="{{goodsList.length === 0 && !loading}}">
+      暂无商品数据
+    </view>
+  </view>
+
+  <!-- 新增按钮 -->
+  <view class="add-btn" bindtap="goToAdd">
+    <text class="icon">+</text>
+  </view>
+</view>

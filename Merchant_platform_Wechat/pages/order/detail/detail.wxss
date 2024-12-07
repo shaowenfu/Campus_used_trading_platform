@@ -1,0 +1,142 @@
+/* pages/order/detail/detail.wxss */
+.container {
+  padding: 30rpx;
+  padding-bottom: 120rpx;
+  background: #f7f7f7;
+}
+
+.status-card {
+  background: #07c160;
+  color: #fff;
+  padding: 40rpx 30rpx;
+  border-radius: 12rpx;
+  margin-bottom: 30rpx;
+}
+
+.status-card .status {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.status-card .order-no {
+  font-size: 28rpx;
+  opacity: 0.9;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+  color: #333;
+}
+
+.info-item {
+  display: flex;
+  font-size: 28rpx;
+  margin-bottom: 20rpx;
+}
+
+.info-item .label {
+  color: #999;
+  width: 160rpx;
+}
+
+.call-btn {
+  color: #07c160;
+  margin-left: 20rpx;
+}
+
+.goods-item {
+  display: flex;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #eee;
+}
+
+.goods-img {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 8rpx;
+  margin-right: 20rpx;
+}
+
+.goods-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.goods-name {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.goods-price {
+  font-size: 28rpx;
+  color: #ff4d4f;
+  display: flex;
+  justify-content: space-between;
+}
+
+.goods-num {
+  color: #999;
+}
+
+.total {
+  text-align: right;
+  padding-top: 20rpx;
+  font-size: 28rpx;
+}
+
+.total .amount {
+  color: #ff4d4f;
+  font-weight: bold;
+  font-size: 32rpx;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  padding: 20rpx 30rpx;
+  box-shadow: 0 -2rpx 10rpx rgba(0,0,0,0.05);
+}
+
+.btn-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20rpx;
+}
+
+.btn {
+  margin: 0;
+  padding: 0 40rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  border-radius: 40rpx;
+  background: #07c160;
+  color: #fff;
+}
+
+.btn-cancel {
+  background: #ff4d4f;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  color: #999;
+  font-size: 28rpx;
+  padding: 60rpx 0;
+}

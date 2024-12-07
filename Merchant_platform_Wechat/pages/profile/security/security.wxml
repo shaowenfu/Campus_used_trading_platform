@@ -1,0 +1,51 @@
+<view class="container">
+  <form class="form">
+    <!-- 原密码 -->
+    <view class="form-item">
+      <view class="label">原密码</view>
+      <input 
+        class="input"
+        password
+        placeholder="请输入原密码"
+        value="{{formData.oldPassword}}"
+        bindinput="onOldPasswordInput"
+      />
+    </view>
+
+    <!-- 新密码 -->
+    <view class="form-item">
+      <view class="label">新密码</view>
+      <input 
+        class="input"
+        password
+        placeholder="请输入新密码"
+        value="{{formData.newPassword}}"
+        bindinput="onNewPasswordInput"
+      />
+    </view>
+
+    <!-- 确认新密码 -->
+    <view class="form-item">
+      <view class="label">确认新密码</view>
+      <input 
+        class="input"
+        password
+        placeholder="请再次输入新密码"
+        value="{{formData.confirmPassword}}"
+        bindinput="onConfirmPasswordInput"
+      />
+    </view>
+  </form>
+
+  <!-- 提交按钮 -->
+  <view class="footer">
+    <button 
+      class="submit-btn" 
+      type="primary"
+      loading="{{submitLoading}}"
+      bindtap="submitForm"
+    >
+      确认修改
+    </button>
+  </view>
+</view> 

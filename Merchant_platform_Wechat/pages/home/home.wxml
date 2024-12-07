@@ -1,0 +1,70 @@
+<view class="home-container">
+  <!-- 运营数据 -->
+  <view class="section">
+    <view class="section-title">今日运营</view>
+    <view class="business-data">
+      <view class="data-item">
+        <view class="num">{{businessData.turnover}}</view>
+        <view class="label">营业额(元)</view>
+      </view>
+      <view class="data-item">
+        <view class="num">{{businessData.validOrderCount}}</view>
+        <view class="label">有效订单数</view>
+      </view>
+      <view class="data-item">
+        <view class="num">{{businessData.orderCompletionRate}}%</view>
+        <view class="label">订单完成率</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 商品总览 -->
+  <view class="section">
+    <view class="section-title">商品总览</view>
+    <view class="dish-overview">
+      <view class="data-item">
+        <view class="num">{{dishOverview.sold}}</view>
+        <view class="label">在售商品</view>
+      </view>
+      <view class="data-item">
+        <view class="num">{{dishOverview.discontinued}}</view>
+        <view class="label">已下架</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 订单管理 -->
+  <view class="section">
+    <view class="section-title">订单管理</view>
+    <view class="order-overview">
+      <view class="data-item" data-status="1" bindtap="goToOrders">
+        <view class="num">{{orderOverview.unsolvedOrders}}</view>
+        <view class="label">待处理</view>
+      </view>
+      <view class="data-item" data-status="2" bindtap="goToOrders">
+        <view class="num">{{orderOverview.tradingOrders}}</view>
+        <view class="label">进行中</view>
+      </view>
+      <view class="data-item" data-status="3" bindtap="goToOrders">
+        <view class="num">{{orderOverview.completedOrders}}</view>
+        <view class="label">已完成</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="quick-entry">
+    <view class="entry-item" data-type="order" bindtap="onQuickEntryTap">
+      <image src="/images/icon-order.png"></image>
+      <text>订单管理</text>
+    </view>
+    <view class="entry-item" data-type="goods" bindtap="onQuickEntryTap">
+      <image src="/images/icon-goods.png"></image>
+      <text>商品管理</text>
+    </view>
+    <view class="entry-item" data-type="stats" bindtap="onQuickEntryTap">
+      <image src="/images/icon-stats.png"></image>
+      <text>数据统计</text>
+    </view>
+  </view>
+</view> 

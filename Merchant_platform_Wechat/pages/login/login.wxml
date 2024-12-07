@@ -1,0 +1,82 @@
+<view class="v1">
+ 
+ <!-- v2父容器  子view使用绝对布局 -->
+   <view class="v2">
+     <view class="dltext">登录</view>
+  
+     <!-- 手机号 -->
+     <view class="phoneCs">
+       <image src="/images/phone.png" class="ph"></image>
+       <input 
+         placeholder="输入手机号/用户名"
+         value="{{username}}"
+         bindinput="onUsernameInput"
+       />
+     </view>
+  
+     <!-- 密码 -->
+     <view class="passwordCs">
+       <image src="/images/password.png" class="ps"></image>
+       <input 
+         placeholder="请输入密码" 
+         password="{{!isPasswordVisible}}"
+         value="{{password}}"
+         bindinput="onPasswordInput"
+       />
+       <image 
+         src="{{isPasswordVisible ? '/images/eye-open.png' : '/images/eye-close.png'}}" 
+         class="eye"
+         bindtap="togglePasswordVisibility"
+       ></image>
+     </view>
+  
+     <!-- 注册 和忘记密码  -->
+     <view class="zhuce">
+       <navigator url="/pages/register/register">立即注册</navigator>
+       <navigator url="/pages/forget-password/forget-password">忘记密码?</navigator>
+     </view>
+  
+     <!-- 登录按钮 -->
+     <view class="denglu">
+       <button class="btn-dl" type="primary" bindtap="login">登录</button>
+     </view>
+  
+     <!-- 协议区  xieyi -->
+     <view class="xieyi">
+       <checkbox 
+         class="isXY"
+         checked="{{isAgreeProtocol}}"
+         bindtap="toggleProtocol"
+       ></checkbox>
+       <view class="text-xy">同意小程序的《使用协议》</view>
+     </view>
+   </view>
+  
+ <!-- 提示框  使用以下方式登录 -->
+   <view class="v3">
+     <view class="line"></view>
+     <view class="lText">您还可以使用以下方式登录</view>
+     <view class="line"></view>
+   </view>
+  
+ <!-- qq  weixin  weibo 图标展示view -->
+   <view class="qwwIcon">
+     <image 
+       src="/images/weixin.png"
+       data-type="weixin"
+       bindtap="thirdPartyLogin"
+     ></image>
+     <image 
+       src="/images/QQ.png"
+       data-type="qq"
+       bindtap="thirdPartyLogin"
+     ></image>
+     <image 
+       src="/images/weibo.png"
+       data-type="weibo"
+       bindtap="thirdPartyLogin"
+     ></image>
+   </view>
+  
+ </view>
+  

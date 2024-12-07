@@ -1,0 +1,36 @@
+<!--pages/profile/profile.wxml-->
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="avatar-wrap" bindtap="changeAvatar">
+      <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill"/>
+      <view class="edit-hint">点击修改</view>
+    </view>
+    <view class="user-info">
+      <view class="name">{{userInfo.name}}</view>
+      <view class="account">账号：{{userInfo.username}}</view>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="menu-list">
+    <view 
+      class="menu-item"
+      wx:for="{{menuList}}"
+      wx:key="text"
+      bindtap="goToMenu"
+      data-url="{{item.url}}"
+    >
+      <view class="menu-content">
+        <image class="icon" src="{{item.icon}}" mode="aspectFit"/>
+        <text class="text">{{item.text}}</text>
+      </view>
+      <text class="arrow">></text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-wrap">
+    <button class="logout-btn" bindtap="logout">退出登录</button>
+  </view>
+</view>

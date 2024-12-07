@@ -1,0 +1,19 @@
+<view class="container">
+  <view class="logo-wrap">
+    <image class="logo" src="/images/logo.png" mode="aspectFit"/>
+    <view class="app-name">{{appInfo.name}}</view>
+    <view class="version">{{appInfo.version}}</view>
+  </view>
+
+  <view class="content">
+    <view class="section">
+      <view class="title">应用介绍</view>
+      <view class="text">{{appInfo.description}}</view>
+    </view>
+
+    <view class="section">
+      <view class="title">联系我们</view>
+      <view class="text">{{appInfo.contact}}</view>
+    </view>
+  </view>
+</view> 

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台 - 校园二手交易平台</title>
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="./assets/css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>管理后台</h2>
+                <div class="sidebar-collapse">≡</div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="#" data-page="overview">
+                            <span class="icon">📊</span>
+                            <span>概览</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="merchant">
+                            <span class="icon">👥</span>
+                            <span>商家管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="category">
+                            <span class="icon">📑</span>
+                            <span>分类管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="product">
+                            <span class="icon">🛍️</span>
+                            <span>商品管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="order">
+                            <span class="icon">📦</span>
+                            <span>订单管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="news">
+                            <span class="icon">📰</span>
+                            <span>新闻管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主要内容区 -->
+        <main class="main-content">
+            <!-- 顶部栏 -->
+            <header class="top-bar">
+                <div class="breadcrumb">
+                    <span class="current-page">概览</span>
+                </div>
+                <div class="user-info">
+                    <div class="notifications">
+                        <span class="icon">🔔</span>
+                        <span class="badge">0</span>
+                    </div>
+                    <div class="user-profile">
+                        <span class="username">管理员</span>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle">
+                                <span class="avatar">👤</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item" id="editProfile">修改资料</a>
+                                <a href="#" class="dropdown-item" id="changePassword">修改密码</a>
+                                <div class="dropdown-divider"></div>
+                                <button class="logout-btn">退出登录</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 内容区域 -->
+            <div class="content">
+                <!-- 概览页面 -->
+                <div class="page active" id="overview">
+                    <div class="welcome-banner">
+                        <h1>欢迎回来，<span class="admin-name">管理员</span></h1>
+                        <p class="current-time">2024年3月21日 星期四 14:30</p>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-content">
+                                <h3>商家总数</h3>
+                                <p class="number">0</p>
+                                <p class="trend increase">较昨日 +0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🛍️</div>
+                            <div class="stat-content">
+                                <h3>商品总数</h3>
+                                <p class="number">0</p>
+                                <p class="trend increase">较昨日 +0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📦</div>
+                            <div class="stat-content">
+                                <h3>待处理订单</h3>
+                                <p class="number">0</p>
+                                <p class="trend">待处理</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📰</div>
+                            <div class="stat-content">
+                                <h3>新闻总数</h3>
+                                <p class="number">0</p>
+                                <p class="trend increase">较昨日 +0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quick-actions">
+                        <h2>快捷操作</h2>
+                        <div class="action-grid">
+                            <button class="action-btn" data-page="merchant">
+                                <span class="icon">➕</span>
+                                <span>新增商家</span>
+                            </button>
+                            <button class="action-btn" data-page="product">
+                                <span class="icon">📝</span>
+                                <span>商品管理</span>
+                            </button>
+                            <button class="action-btn" data-page="order">
+                                <span class="icon">📋</span>
+                                <span>订单处理</span>
+                            </button>
+                            <button class="action-btn" data-page="news">
+                                <span class="icon">📢</span>
+                                <span>发布新闻</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商家管理页面 -->
+                <div class="page" id="merchant">
+                    <div class="page-header">
+                        <h2>商家管理</h2>
+                        <div class="header-actions">
+                            <button class="refresh-btn" title="刷新数据">
+                                <span class="icon">🔄</span>
+                            </button>
+                            <button class="add-btn" id="addMerchant">
+                                <span class="icon">➕</span>
+                                <span>新增商家</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-bar">
+                        <div class="search-input">
+                            <span class="icon">🔍</span>
+                            <input type="text" placeholder="商家姓名搜索" id="merchantSearch">
+                        </div>
+                        <div class="filter-group">
+                            <select id="statusFilter">
+                                <option value="">全部状态</option>
+                                <option value="1">启用</option>
+                                <option value="0">禁用</option>
+                            </select>
+                        </div>
+                        <button class="search-btn">搜索</button>
+                    </div>
+                    <div class="data-table" id="merchantTable"></div>
+                    <div class="pagination" id="merchantPagination"></div>
+                </div>
+
+                <!-- 分类管理页面 -->
+                <div class="page" id="category">
+                    <div class="page-header">
+                        <h2>分类管理</h2>
+                        <div class="header-actions">
+                            <button class="refresh-btn" title="刷新数据">
+                                <span class="icon">🔄</span>
+                            </button>
+                            <button class="add-btn" id="addCategory">
+                                <span class="icon">➕</span>
+                                <span>新增分类</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="category-grid" id="categoryGrid"></div>
+                </div>
+
+                <!-- 商品管理页面 -->
+                <div class="page" id="product">
+                    <div class="page-header">
+                        <h2>商品管理</h2>
+                        <div class="header-actions">
+                            <button class="refresh-btn" title="刷新数据">
+                                <span class="icon">🔄</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-bar">
+                        <div class="search-input">
+                            <span class="icon">🔍</span>
+                            <input type="text" placeholder="商品名称搜索" id="productSearch">
+                        </div>
+                        <div class="filter-group">
+                            <select id="categoryFilter">
+                                <option value="">全部分类</option>
+                            </select>
+                            <select id="productStatus">
+                                <option value="">全部状态</option>
+                                <option value="1">在售</option>
+                                <option value="0">下架</option>
+                            </select>
+                        </div>
+                        <button class="search-btn">搜索</button>
+                    </div>
+                    <div class="data-table" id="productTable"></div>
+                    <div class="pagination" id="productPagination"></div>
+                </div>
+
+                <!-- 订单管理页面 -->
+                <div class="page" id="order">
+                    <div class="page-header">
+                        <h2>订单管理</h2>
+                        <div class="header-actions">
+                            <button class="refresh-btn" title="刷新数据">
+                                <span class="icon">🔄</span>
+                            </button>
+                            <div class="order-stats">
+                                <span class="stat">待处理: <b>0</b></span>
+                                <span class="stat">今日订单: <b>0</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-bar">
+                        <div class="search-input">
+                            <span class="icon">🔍</span>
+                            <input type="text" placeholder="订单号/手机号搜索" id="orderSearch">
+                        </div>
+                        <div class="filter-group">
+                            <div class="date-range">
+                                <input type="date" id="startDate">
+                                <span>至</span>
+                                <input type="date" id="endDate">
+                            </div>
+                            <select id="orderStatus">
+                                <option value="">全部状态</option>
+                            </select>
+                        </div>
+                        <button class="search-btn">搜索</button>
+                    </div>
+                    <div class="data-table" id="orderTable"></div>
+                    <div class="pagination" id="orderPagination"></div>
+                </div>
+
+                <!-- 新闻管理页面 -->
+                <div class="page" id="news">
+                    <div class="page-header">
+                        <h2>新闻管理</h2>
+                        <div class="header-actions">
+                            <button class="refresh-btn" title="刷新数据">
+                                <span class="icon">🔄</span>
+                            </button>
+                            <button class="add-btn" id="addNews">
+                                <span class="icon">➕</span>
+                                <span>发布新闻</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="data-table" id="newsTable"></div>
+                    <div class="pagination" id="newsPagination"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="./assets/js/mock.js"></script>
+    <script src="./assets/js/api.js"></script>
+    <script src="./assets/js/dashboard.js"></script>
+    <script src="./assets/js/modules/merchant.js"></script>
+    <script src="./assets/js/modules/product.js"></script>
+    <script src="./assets/js/modules/order.js"></script>
+    <script src="./assets/js/modules/news.js"></script>
+</body>
+</html> 

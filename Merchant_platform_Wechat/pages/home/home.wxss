@@ -1,0 +1,63 @@
+.home-container {
+  padding: 30rpx;
+  background: #f7f7f7;
+}
+
+.section {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+}
+
+.business-data,
+.dish-overview,
+.order-overview {
+  display: flex;
+  justify-content: space-around;
+}
+
+.data-item {
+  text-align: center;
+}
+
+.data-item .num {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #07c160;
+  margin-bottom: 10rpx;
+}
+
+.data-item .label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.quick-entry {
+  display: flex;
+  justify-content: space-around;
+  padding: 30rpx 0;
+  background: #fff;
+  border-radius: 12rpx;
+}
+
+.entry-item {
+  text-align: center;
+}
+
+.entry-item image {
+  width: 80rpx;
+  height: 80rpx;
+  margin-bottom: 16rpx;
+}
+
+.entry-item text {
+  font-size: 28rpx;
+  color: #333;
+} 

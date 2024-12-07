@@ -1,0 +1,94 @@
+<!--pages/goods/edit/edit.wxml-->
+<view class="container">
+  <form class="form">
+    <!-- 商品图片 -->
+    <view class="form-item">
+      <view class="label">商品图片</view>
+      <view class="image-upload" bindtap="chooseImage">
+        <image 
+          wx:if="{{imageUrl}}" 
+          src="{{imageUrl}}" 
+          mode="aspectFill"
+          class="preview"
+        />
+        <view wx:else class="upload-btn">
+          <text class="icon">+</text>
+          <text class="text">上传图片</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 商品名称 -->
+    <view class="form-item">
+      <view class="label">商品名称</view>
+      <input 
+        class="input"
+        placeholder="请输入商品名称"
+        value="{{formData.name}}"
+        bindinput="onNameInput"
+      />
+    </view>
+
+    <!-- 商品分类 -->
+    <view class="form-item">
+      <view class="label">商品分类</view>
+      <picker 
+        mode="selector" 
+        range="{{categories}}" 
+        range-key="name"
+        bindchange="onCategoryChange"
+      >
+        <view class="picker {{formData.categoryId ? '' : 'placeholder'}}">
+          {{formData.categoryId ? categories[formData.categoryId-1].name : '请选择商品分类'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 商品价格 -->
+    <view class="form-item">
+      <view class="label">商品价格</view>
+      <input 
+        class="input"
+        type="digit"
+        placeholder="请输入商品价格"
+        value="{{formData.price}}"
+        bindinput="onPriceInput"
+      />
+    </view>
+
+    <!-- 商品库存 -->
+    <view class="form-item">
+      <view class="label">商品库存</view>
+      <input 
+        class="input"
+        type="number"
+        placeholder="请输入商品库存"
+        value="{{formData.amount}}"
+        bindinput="onAmountInput"
+      />
+    </view>
+
+    <!-- 商品描述 -->
+    <view class="form-item">
+      <view class="label">商品描述</view>
+      <textarea 
+        class="textarea"
+        placeholder="请输入商品描述"
+        value="{{formData.description}}"
+        bindinput="onDescInput"
+      />
+    </view>
+  </form>
+
+  <!-- 提交按钮 -->
+  <view class="footer">
+    <button 
+      class="submit-btn" 
+      type="primary"
+      loading="{{submitLoading}}"
+      bindtap="submitForm"
+    >
+      提交
+    </button>
+  </view>
+</view>

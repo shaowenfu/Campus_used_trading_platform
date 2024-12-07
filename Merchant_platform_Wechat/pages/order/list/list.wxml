@@ -1,0 +1,104 @@
+<!--pages/order/list/list.wxml-->
+<view class="container">
+  <!-- 订单统计 -->
+  <view class="statistics">
+    <view class="stat-item">
+      <text class="num">{{orderStatistics.toBeConfirmed}}</text>
+      <text class="label">待接单</text>
+    </view>
+    <view class="stat-item">
+      <text class="num">{{orderStatistics.deliveryInProgress}}</text>
+      <text class="label">进行中</text>
+    </view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <input 
+        type="text" 
+        placeholder="输入订单号/手机号搜索"
+        confirm-type="search"
+        model:value="{{searchValue}}"
+        bindconfirm="onSearch"
+      />
+      <icon class="search-icon" type="search" size="16" bindtap="onSearch"></icon>
+    </view>
+  </view>
+
+  <!-- 状态切换 -->
+  <view class="status-tabs">
+    <view 
+      wx:for="{{statusOptions}}" 
+      wx:key="value"
+      class="tab-item {{queryParams.status === item.value ? 'active' : ''}}"
+      bindtap="onStatusChange"
+      data-value="{{item.value}}"
+    >
+      {{item.text}}
+    </view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class="order-list">
+    <view 
+      class="order-item"
+      wx:for="{{orderList}}"
+      wx:key="id"
+      bindtap="goToDetail"
+      data-id="{{item.id}}"
+    >
+      <view class="order-header">
+        <text class="order-no">订单号：{{item.number}}</text>
+        <text class="order-status">{{item.statusText}}</text>
+      </view>
+      
+      <view class="order-info">
+        <view class="info-item">
+          <text class="label">下单时间：</text>
+          <text>{{item.orderTime}}</text>
+        </view>
+        <view class="info-item">
+          <text class="label">联系方式：</text>
+          <text>{{item.phone}}</text>
+        </view>
+        <view class="info-item">
+          <text class="label">订单金额：</text>
+          <text class="amount">¥{{item.amount}}</text>
+        </view>
+      </view>
+
+      <view class="order-footer">
+        <view class="btn-group">
+          <button 
+            wx:if="{{item.status === 1}}"
+            class="btn" 
+            catchtap="confirmOrder"
+            data-id="{{item.id}}"
+          >接单</button>
+          <button 
+            wx:if="{{item.status === 2}}"
+            class="btn" 
+            catchtap="completeOrder"
+            data-id="{{item.id}}"
+          >完成</button>
+          <button 
+            wx:if="{{item.status === 1}}"
+            class="btn btn-cancel" 
+            catchtap="cancelOrder"
+            data-id="{{item.id}}"
+          >取消</button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading" wx:if="{{loading}}">加载中...</view>
+    <view class="no-more" wx:if="{{orderList.length >= total && orderList.length > 0}}">
+      没有更多订单了
+    </view>
+    <view class="empty" wx:if="{{orderList.length === 0 && !loading}}">
+      暂无订单数据
+    </view>
+  </view>
+</view>
