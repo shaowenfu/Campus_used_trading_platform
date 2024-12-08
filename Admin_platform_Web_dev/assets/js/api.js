@@ -1,7 +1,7 @@
 // API 接口封装
 const API = {
-    baseUrl: 'http://localhost:8080',
-    isDev: true, // 开发模式标志
+    baseUrl: 'http://localhost:8081',
+    isDev: false, // 开发模式标志
 
     // 获取 mock 数据的通用方法
     async getMockData(module, params = {}) {
@@ -29,37 +29,32 @@ const API = {
     getHeaders() {
         return {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+            'Authorization': `${localStorage.getItem('adminToken')}`
         };
     },
 
     // 登录接口
-    login: async (username, password) => {
-        if (API.isDev) {
-            await mockDelay();
-            return {
-                code: 0,
-                data: {
-                    id: 1,
-                    name: '测试管理员',
-                    token: 'mock-token',
-                    userName: username
-                },
-                msg: '登录成功'
-            };
-        }
+    login: async function(username, password) {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
 
+        const requestOptions = {
+            method: 'POST',
+            mode: 'cors', // 显式指定使用CORS  
+            headers: myHeaders,
+            body: JSON.stringify({
+                username: username,
+                password: password
+            }),
+            redirect: 'follow'
+        };
+        // 打印请求体
+        console.log(`请求体：${JSON.stringify(requestOptions)}`);
         try {
-            const response = await fetch(`${API.baseUrl}/admin/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            });
-            return await response.json();
+            const response = await fetch("http://localhost:8081/admin/login", requestOptions);
+            return await response.text();
         } catch (error) {
-            console.error('登录请求失败:', error);
+            console.error('登录请求错误:', error);
             throw error;
         }
     },

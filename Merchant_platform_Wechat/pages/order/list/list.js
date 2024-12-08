@@ -52,7 +52,7 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面显示
+   * 生命周���函数--监听页面显示
    */
   onShow() {
 
@@ -118,12 +118,18 @@ Page({
         url: '/marketer/order/statistics',
         method: 'GET'
       })
-      
-      if(res.data.code === 0) {
+
+      console.log('统计数据完整响应:', res)
+
+      if(res.code === 1) {
         this.setData({
-          orderStatistics: res.data.data
+          orderStatistics: {
+            deliveryInProgress: res.data.deliveryInProgress,
+            toBeConfirmed: res.data.toBeConfirmed,
+          }
         })
       }
+      console.log('设置后的orderStatistics:', this.data.orderStatistics)
     } catch(e) {
       console.error('获取订单统计失败', e)
     }
@@ -150,13 +156,16 @@ Page({
         method: 'GET',
         data: this.data.queryParams
       })
+
+      console.log('订单列表完整响应:', res)
       
-      if(res.data.code === 0) {
-        const { records, total } = res.data.data
+      if(res.code === 1) {
+        const { records, total } = res.data
         this.setData({
           orderList: this.data.queryParams.page === 1 ? records : [...this.data.orderList, ...records],
           total
         })
+        console.log('设置后的orderList:', this.data.orderList)
       }
     } catch(e) {
       console.error('获取订单列表失败', e)
@@ -228,7 +237,7 @@ Page({
         data: { id: orderId }
       })
       
-      if(res.data.code === 0) {
+      if(res.code === 1) {
         wx.showToast({ title: '接单成功' })
         this.getOrderList()
         this.getOrderStatistics()
@@ -255,7 +264,7 @@ Page({
         method: 'PUT'
       })
       
-      if(res.data.code === 0) {
+      if(res.code === 1) {
         wx.showToast({ title: '订单已完成' })
         this.getOrderList()
         this.getOrderStatistics()
@@ -295,7 +304,7 @@ Page({
         }
       })
       
-      if(res.data.code === 0) {
+      if(res.code === 1) {
         wx.showToast({ title: '单已取消' })
         this.getOrderList()
         this.getOrderStatistics()

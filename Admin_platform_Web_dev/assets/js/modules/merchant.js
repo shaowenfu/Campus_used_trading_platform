@@ -62,7 +62,7 @@ class MerchantManager {
                 name: this.searchName
             });
 
-            if (result.code === 0 && result.data) {
+            if (result.code === 1 && result.data) {
                 this.total = result.data.total;
                 this.renderMerchantTable(result.data.records);
                 this.renderPagination();
@@ -138,7 +138,7 @@ class MerchantManager {
     async toggleStatus(id, status) {
         try {
             const result = await API.merchant.updateStatus(id, status);
-            if (result.code === 0) {
+            if (result.code === 1) {
                 alert(status === 1 ? '商家已启用' : '商家已禁用');
                 this.loadMerchantList();
             } else {
@@ -177,7 +177,7 @@ class MerchantManager {
     async loadMerchantData(id) {
         try {
             const result = await API.merchant.getById(id);
-            if (result.code === 0 && result.data) {
+            if (result.code === 1 && result.data) {
                 const merchant = result.data;
                 document.getElementById('merchantId').value = merchant.id;
                 document.getElementById('username').value = merchant.username;
@@ -215,7 +215,7 @@ class MerchantManager {
 
         try {
             const result = await (id ? API.merchant.edit(formData) : API.merchant.add(formData));
-            if (result.code === 0) {
+            if (result.code === 1) {
                 alert(id ? '编辑成功' : '添加成功');
                 this.closeMerchantModal();
                 this.loadMerchantList();
@@ -250,7 +250,7 @@ class MerchantManager {
 
         try {
             const result = await API.merchant.updatePassword(data);
-            if (result.code === 0) {
+            if (result.code === 1) {
                 alert('密码修改成功');
                 this.closePasswordModal();
             } else {

@@ -4,15 +4,15 @@
     <view class="section-title">今日运营</view>
     <view class="business-data">
       <view class="data-item">
-        <view class="num">{{businessData.turnover}}</view>
+        <view class="num">{{businessData.turnover || 0}}</view>
         <view class="label">营业额(元)</view>
       </view>
       <view class="data-item">
-        <view class="num">{{businessData.validOrderCount}}</view>
+        <view class="num">{{businessData.validOrderCount || 0}}</view>
         <view class="label">有效订单数</view>
       </view>
       <view class="data-item">
-        <view class="num">{{businessData.orderCompletionRate}}%</view>
+        <view class="num">{{businessData.orderCompletionRate || 0}}%</view>
         <view class="label">订单完成率</view>
       </view>
     </view>

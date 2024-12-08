@@ -1,5 +1,6 @@
 import { isDev, mockData } from '../../utils/config'
 import { request } from '../../utils/request'
+
 Page({
   data: {
     businessData: {}, // 运营数据
@@ -16,7 +17,7 @@ Page({
   // 获取运营数据
   async getBusinessData() {
     try {
-      if(isDev) {
+      if (isDev) {
         this.setData({
           businessData: mockData.workspace.businessData
         })
@@ -27,13 +28,21 @@ Page({
         url: '/marketer/workspace/businessData',
         method: 'GET'
       })
+
+      console.log('完整的响应数据:', res);
       
-      if(res.data.code === 0) {
+      if (res.code === 1) {
         this.setData({
-          businessData: res.data.data
+          businessData: {
+            turnover: res.data.turnover,
+            validOrderCount: res.data.validOrderCount,
+            orderCompletionRate: res.data.orderCompletionRate
+          }
         })
       }
-    } catch(e) {
+      
+      console.log('设置后的businessData:', this.data.businessData)
+    } catch (e) {
       console.error('获取运营数据失败', e)
     }
   },
@@ -41,7 +50,7 @@ Page({
   // 获取商品总览
   async getDishOverview() {
     try {
-      if(isDev) {
+      if (isDev) {
         this.setData({
           dishOverview: mockData.workspace.dishOverview
         })
@@ -49,24 +58,25 @@ Page({
       }
 
       const res = await request({
-        url: '/marketer/workspace/overviewDishes',
+        url: '/marketer/workspace/overviewThings',
         method: 'GET'
       })
-      
-      if(res.data.code === 0) {
+
+      if (res.data.code === 1) {
         this.setData({
           dishOverview: res.data.data
         })
       }
-    } catch(e) {
+    } catch (e) {
       console.error('获取商品总览失败', e)
     }
   },
 
   // 获取订单总览
+
   async getOrderOverview() {
     try {
-      if(isDev) {
+      if (isDev) {
         this.setData({
           orderOverview: mockData.workspace.orderOverview
         })
@@ -74,16 +84,26 @@ Page({
       }
 
       const res = await request({
-        url: '/marketer/workspace/overviewOrders', 
+        url: '/marketer/workspace/overviewOrders',
         method: 'GET'
       })
-      
-      if(res.data.code === 0) {
+
+      //打印完整的响应数据
+      console.log('完整的响应数据:', res);
+
+      if (res.code === 1) {
         this.setData({
-          orderOverview: res.data.data
+          orderOverview: {
+            tradingOrders: res.data.tradingOrders,
+            unsolvedOrders: res.data.unsolvedOrders,
+            completedOrders: res.data.completedOrders,
+            cancelledOrders: res.data.cancelledOrders,
+            allOrders: res.data.allOrders
+          }
         })
       }
-    } catch(e) {
+      console.log('设置后的orderOverview:', this.data.orderOverview)
+    } catch (e) {
       console.error('获取订单总览失败', e)
     }
   },
@@ -99,7 +119,7 @@ Page({
   // 使用统一的快捷入口处理函数
   onQuickEntryTap(e) {
     const type = e.currentTarget.dataset.type
-    switch(type) {
+    switch (type) {
       case 'order':
         wx.switchTab({
           url: '/pages/order/list/list'

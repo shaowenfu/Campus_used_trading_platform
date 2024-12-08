@@ -1,6 +1,7 @@
 // pages/profile/profile.js
 import { isDev, mockData } from '../../../utils/config'
 import { request } from '../../../utils/request'
+
 Page({
   data: {
     userInfo: null,
