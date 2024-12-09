@@ -82,33 +82,39 @@ Page({
   // 提交表单
   async submitForm() {
     if(!this.validateForm()) return
-    if(this.data.submitLoading) return
-    
-    this.setData({ submitLoading: true })
     
     try {
+      const marketerDTO = {
+        id: wx.getStorageSync('userInfo').id,
+        username: this.data.formData.username,
+        name: this.data.formData.name,
+        phone: this.data.formData.phone,
+        idNumber: this.data.formData.idNumber
+      }
+
+      console.log('提交的商家信息:', marketerDTO)
+
       const res = await request({
-        url: '/marketer/info',
+        url: '/marketer',
         method: 'PUT',
-        data: this.data.formData
+        data: marketerDTO,
+        header: {
+          'content-type': 'application/json'  // 使用JSON格式
+        }
       })
       
-      // 更新缓存
-      const userInfo = wx.getStorageSync('userInfo') || {}
-      wx.setStorageSync('userInfo', {
-        ...userInfo,
-        ...this.data.formData
+      if(res.code === 1) {
+        wx.showToast({ title: '修改成功' })
+        setTimeout(() => {
+          wx.navigateBack()
+        }, 1500)
+      }
+    } catch(e) {
+      console.error('修改商家信息失败:', e)
+      wx.showToast({
+        title: '修改失败',
+        icon: 'none'
       })
-      
-      wx.showToast({ title: '修改成功' })
-      setTimeout(() => {
-        wx.navigateBack()
-      }, 1500)
-      
-    } catch (error) {
-      // 错误处理已在request封装中完成
-    } finally {
-      this.setData({ submitLoading: false })
     }
   }
 }) 

@@ -6,10 +6,27 @@
       <input 
         type="text" 
         placeholder="输入商品名称搜索"
+        value="{{searchValue}}"
+        bindinput="onSearchInput"
         confirm-type="search"
         bindconfirm="onSearch"
       />
-      <icon class="search-icon" type="search" size="16"></icon>
+      <view class="search-actions">
+        <icon 
+          wx:if="{{searchValue}}" 
+          class="clear-icon" 
+          type="clear" 
+          size="16" 
+          bindtap="clearSearch"
+        ></icon>
+        <icon 
+          class="search-icon" 
+          type="search" 
+          size="16" 
+          bindtap="onSearch"
+          hover-class="icon-hover"
+        ></icon>
+      </view>
     </view>
   </view>
 
@@ -22,7 +39,7 @@
       bindchange="onCategoryChange"
     >
       <view class="filter-item">
-        <text>分类</text>
+        <text>{{queryParams.categoryId ? categoryMap[queryParams.categoryId] : '选择分类'}}</text>
         <text class="arrow">></text>
       </view>
     </picker>
@@ -34,7 +51,7 @@
       bindchange="onStatusChange"
     >
       <view class="filter-item">
-        <text>状态</text>
+        <text>{{queryParams.status !== '' ? statusMap[queryParams.status] : '选择状态'}}</text>
         <text class="arrow">></text>
       </view>
     </picker>
@@ -50,9 +67,10 @@
       <image class="goods-img" src="{{item.image}}" mode="aspectFill"/>
       <view class="goods-info">
         <view class="goods-name">{{item.name}}</view>
-        <view class="goods-category">{{item.categoryName}}</view>
+        <view class="goods-category">{{categoryMap[item.categoryId]}}</view>
         <view class="goods-price">¥{{item.price}}</view>
         <view class="goods-stock">库存: {{item.amount}}</view>
+        <view class="goods-status">状态: {{statusMap[item.status]}}</view>
       </view>
       <view class="goods-actions">
         <button 

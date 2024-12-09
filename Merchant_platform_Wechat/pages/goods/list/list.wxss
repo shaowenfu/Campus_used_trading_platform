@@ -25,13 +25,23 @@
   padding: 0 30rpx;
   font-size: 28rpx;
   flex: 1;
-  padding-right: 70rpx;
+  padding-right: 100rpx;
 }
 
-.search-icon {
+.search-actions {
   position: absolute;
   right: 30rpx;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.search-icon, .clear-icon {
   color: #999;
+}
+
+.icon-hover {
+  opacity: 0.7;
 }
 
 .filter-bar {
@@ -104,6 +114,12 @@
   color: #999;
 }
 
+.goods-status {
+  font-size: 28rpx;
+  color: #666;
+  margin-top: 10rpx;
+}
+
 .goods-actions {
   display: flex;
   flex-direction: column;
@@ -149,4 +165,9 @@
   font-size: 28rpx;
   color: #999;
   padding: 30rpx 0;
+}
+
+.filter-item text {
+  font-size: 28rpx;
+  color: #333;
 }

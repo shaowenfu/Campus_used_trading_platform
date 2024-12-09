@@ -10,6 +10,7 @@ Page({
   },
 
   onLoad(options) {
+    console.log('接收到的订单id:', options.id)
     this.setData({
       orderId: options.id
     })
@@ -35,17 +36,19 @@ Page({
         method: 'GET'
       })
       
-      if(res.data.code === 0) {
+      if(res.code === 1) {
         this.setData({
-          orderDetail: res.data.data
+          orderDetail: res.data
         })
+        console.log('订单详情数据:', this.data.orderDetail)
       } else {
         wx.showToast({
-          title: res.data.msg,
+          title: res.msg,
           icon: 'none'
         })
       }
     } catch(e) {
+      console.error('获取订单详情失败:', e)
       wx.showToast({
         title: '获取订单详情失败',
         icon: 'none'

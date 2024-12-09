@@ -12,11 +12,36 @@ export const request = (options) => {
       }
     }
 
+    // 如果是application/x-www-form-urlencoded格式，确保data是字符串
+    if (options.header && 
+        options.header['content-type'] === 'application/x-www-form-urlencoded') {
+      // 如果已经是字符串格式，不需要处理
+      if(typeof options.data === 'string') {
+        console.log('数据已经是字符串格式:', options.data)
+      } else {
+        // 如果是对象，转换为表单数据
+        const formData = new URLSearchParams()
+        for(let key in options.data) {
+          if(options.data[key] !== undefined && options.data[key] !== null) {
+            formData.append(key, options.data[key])
+          }
+        }
+        options.data = formData.toString()
+        console.log('转换后的表单数据:', options.data)
+      }
+    }
+
     wx.request({
       ...options,
       url: `${app.globalData.baseUrl}${options.url}`,
       success: (res) => {
         console.log(`发送请求URL:${options.url}`);
+        console.log("请求参数:", {
+          url: options.url,
+          method: options.method,
+          data: options.data,
+          header: options.header
+        });
         console.log("请求响应数据:", res.data);
         if(res.data.code === 1) {
           resolve({
@@ -43,31 +68,3 @@ export const request = (options) => {
   })
 }
 
-// 上传文件方法
-export const uploadFile = (options) => {
-  return new Promise((resolve, reject) => {
-    wx.uploadFile({
-      ...options,
-      url: `${app.globalData.baseUrl}${options.url}`,
-      success: (res) => {
-        const data = JSON.parse(res.data)
-        if(data.code === 0) {
-          resolve(data)
-        } else {
-          reject(data)
-          wx.showToast({
-            title: data.msg || '上传失败',
-            icon: 'none'
-          })
-        }
-      },
-      fail: (err) => {
-        reject(err)
-        wx.showToast({
-          title: '网络错误',
-          icon: 'none'
-        })
-      }
-    })
-  })
-} 

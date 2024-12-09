@@ -66,38 +66,47 @@ Page({
     return true
   },
 
-  // 提交表单
-  async submitForm() {
+  // 修改密码
+  async changePassword() {
     if(!this.validateForm()) return
     if(this.data.submitLoading) return
     
     this.setData({ submitLoading: true })
     
     try {
-      if(isDev) {
-        wx.showToast({ title: '修改成功' })
-        setTimeout(() => {
-          wx.navigateBack()
-        }, 1500)
-        return
+      const passwordEditDTO = {
+        marketerId: wx.getStorageSync('userInfo').id,
+        oldPassword: this.data.formData.oldPassword,
+        newPassword: this.data.formData.newPassword
       }
 
+      console.log('提交的修改密码数据:', passwordEditDTO)
+
       const res = await request({
-        url: '/marketer/password',
+        url: '/marketer/editPassword',
         method: 'PUT',
-        data: {
-          oldPassword: this.data.formData.oldPassword,
-          newPassword: this.data.formData.newPassword
+        data: passwordEditDTO,
+        header: {
+          'content-type': 'application/json'  // 使用JSON格式
         }
       })
       
-      wx.showToast({ title: '修改成功' })
-      setTimeout(() => {
-        wx.navigateBack()
-      }, 1500)
-      
-    } catch (error) {
-      // 错误处理已在request封装中完成
+      if(res.code === 1) {
+        wx.showToast({ title: '修改成功' })
+        setTimeout(() => {
+          // 修改密码成功后退出登录
+          wx.clearStorageSync()
+          wx.reLaunch({
+            url: '/pages/login/login'
+          })
+        }, 1500)
+      }
+    } catch(e) {
+      console.error('修改密码失败:', e)
+      wx.showToast({
+        title: '修改失败',
+        icon: 'none'
+      })
     } finally {
       this.setData({ submitLoading: false })
     }

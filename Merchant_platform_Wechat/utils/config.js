@@ -86,7 +86,7 @@ export const mockData = {
       {
         id: 1,
         number: "202403210001",
-        status: 'pending',
+        status: 2,
         statusText: "待接单",
         orderTime: "2024-03-21 10:00:00",
         amount: 99.00,
@@ -95,20 +95,11 @@ export const mockData = {
       {
         id: 2,
         number: "202403210002",
-        status: 'processing',
+        status: 3,
         statusText: "进行中",
         orderTime: "2024-03-21 11:00:00",
         amount: 199.00,
         phone: "13800138001"
-      },
-      {
-        id: 3,
-        number: "202403210003",
-        status: 'completed',
-        statusText: "已完成",
-        orderTime: "2024-03-21 12:00:00",
-        amount: 299.00,
-        phone: "13800138002"
       }
     ]
   },

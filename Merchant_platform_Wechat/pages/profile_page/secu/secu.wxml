@@ -42,10 +42,10 @@
     <button 
       class="submit-btn" 
       type="primary"
+      bindtap="changePassword"
       loading="{{submitLoading}}"
-      bindtap="submitForm"
     >
-      确认修改
+      提交
     </button>
   </view>
 </view> 

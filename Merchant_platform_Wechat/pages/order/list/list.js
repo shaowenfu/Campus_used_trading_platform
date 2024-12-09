@@ -52,7 +52,7 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面显示
+   * 生命周期函数--监听页��显示
    */
   onShow() {
 
@@ -235,7 +235,7 @@ Page({
       const res = await request({
         url: '/marketer/order/confirm',
         method: 'PUT',
-        data: { id: orderId }
+        data: orderId
       })
       
       if(res.code === 1) {
@@ -259,6 +259,7 @@ Page({
   // 完成订单
   async completeOrder(e) {
     const orderId = e.currentTarget.dataset.id
+    console.log('orderId:',orderId)
     try {
       const res = await request({
         url: `/marketer/order/complete/${orderId}`,
@@ -286,27 +287,40 @@ Page({
   // 取消订单
   async cancelOrder(e) {
     const orderId = e.currentTarget.dataset.id
-    
-    const { value: cancelReason } = await wx.showModal({
+    const result = await wx.showModal({
       title: '取消订单',
       editable: true,
       placeholderText: '请输入取消原因'
     })
     
-    if(!cancelReason) return
+    // 用户点击了取消按钮
+    if (!result.confirm) {
+      return
+    }
+    
+    // 用户点击了确���按钮，但没有输入原因
+    if (!result.content) {
+      wx.showToast({
+        title: '取消原因不能为空',
+        icon: 'none'
+      }) 
+      return
+    } 
     
     try {
+      console.log('orderId:', orderId) 
+      console.log('cancelReason:', result.content)
       const res = await request({
         url: '/marketer/order/cancel',
         method: 'PUT',
         data: {
           id: orderId,
-          cancelReason
+          cancelReason: result.content
         }
       })
       
       if(res.code === 1) {
-        wx.showToast({ title: '单已取消' })
+        wx.showToast({ title: '订单已取消' })
         this.getOrderList()
         this.getOrderStatistics()
       } else {
@@ -326,6 +340,7 @@ Page({
   // 查看订单详情
   goToDetail(e) {
     const orderId = e.currentTarget.dataset.id
+    console.log('跳转到订单详情，orderId:', orderId)
     wx.navigateTo({
       url: `/pages/order/detail/detail?id=${orderId}`
     })

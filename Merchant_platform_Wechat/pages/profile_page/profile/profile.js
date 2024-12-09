@@ -43,26 +43,32 @@ Page({
         method: 'GET'
       })
       
-      if(res.data.code === 0) {
+      if(res.code === 1) {
         this.setData({
-          userInfo: res.data.data
+          userInfo: res.data
         })
       }
     } catch(e) {
       console.error('获取商家信息失败', e)
+      wx.showToast({
+        title: '获取商家信息失败',
+        icon: 'none'
+      })
     }
   },
 
   // 修改头像
   async changeAvatar() {
     try {
-      const res = await wx.chooseImage({
+      const res = await wx.chooseMedia({
         count: 1,
+        mediaType: ['image'],
         sizeType: ['compressed'],
         sourceType: ['album', 'camera']
       })
 
-      const tempFilePath = res.tempFilePaths[0]
+      const tempFilePath = res.tempFiles[0].tempFilePath
+      console.log('临时文件路径:', tempFilePath)
       
       if(isDev) {
         this.setData({
@@ -72,33 +78,67 @@ Page({
         return
       }
 
-      const uploadRes = await wx.uploadFile({
-        url: '/marketer/file/upload',
-        filePath: tempFilePath,
-        name: 'file'
-      })
+      try {
+        // 使用文件系统管理器保存文件
+        const fs = wx.getFileSystemManager()
+        const saveRes = await new Promise((resolve, reject) => {
+          fs.saveFile({
+            tempFilePath: tempFilePath,
+            success: (res) => resolve(res),
+            fail: (err) => reject(err)
+          })
+        })
+        
+        console.log('保存结果:', saveRes)
+        
+        // 读取图片为base64
+        const base64 = await new Promise((resolve, reject) => {
+          fs.readFile({
+            filePath: saveRes.savedFilePath,
+            encoding: 'base64',
+            success: (res) => resolve(res.data),
+            fail: (err) => reject(err)
+          })
+        })
+        
+        // 构造可展示的图片路径
+        const imageUrl = `data:image/png;base64,${base64}`
 
-      const data = JSON.parse(uploadRes.data)
-      if(data.code === 0) {
         // 更新头像
-        const updateRes = await wx.request({
+        const updateRes = await request({
           url: '/marketer/info/avatar',
           method: 'PUT',
           data: {
-            avatar: data.data.url
+            avatar: saveRes.savedFilePath
+          },
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
           }
         })
-
-        if(updateRes.data.code === 0) {
+        
+        if(updateRes.code === 1) {
           this.setData({
-            'userInfo.avatar': data.data.url
+            'userInfo.avatar': imageUrl,  // 使用base64预览
+            'userInfo.avatarPath': saveRes.savedFilePath  // 存储永久路径
           })
           wx.showToast({ title: '修改成功' })
+        } else {
+          wx.showToast({
+            title: updateRes.msg || '修改失败',
+            icon: 'none'
+          })
         }
+      } catch(err) {
+        console.error('保存头像失败:', err)
+        wx.showToast({
+          title: '保存头像失败',
+          icon: 'none'
+        })
       }
     } catch(e) {
+      console.error('选择头像失败:', e)
       wx.showToast({
-        title: '修改失败',
+        title: '选择头像失败',
         icon: 'none'
       })
     }
@@ -111,18 +151,33 @@ Page({
   },
 
   // 退出登录
-  logout() {
+  async logout() {
     wx.showModal({
       title: '提示',
       content: '确定要退出登录吗？',
-      success: (res) => {
+      success: async (res) => {
         if(res.confirm) {
-          // 清除本地存储
-          wx.clearStorageSync()
-          // 跳转到登录页
-          wx.reLaunch({
-            url: '/pages/login/login'
-          })
+          try {
+            const res = await request({
+              url: '/marketer/logout',
+              method: 'POST'
+            })
+            
+            if(res.code === 1) {
+              // 清除本地存储
+              wx.clearStorageSync()
+              // 跳转到登录页
+              wx.reLaunch({
+                url: '/pages/login/login'
+              })
+            }
+          } catch(e) {
+            console.error('退出登录失败:', e)
+            wx.showToast({
+              title: '退出登录失败',
+              icon: 'none'
+            })
+          }
         }
       }
     })

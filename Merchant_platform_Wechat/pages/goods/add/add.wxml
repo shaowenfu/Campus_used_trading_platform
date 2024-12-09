@@ -9,6 +9,7 @@
           wx:if="{{imageUrl}}" 
           src="{{imageUrl}}" 
           mode="aspectFill"
+          show-menu-by-longpress
           class="preview"
         />
         <view wx:else class="upload-btn">
@@ -39,7 +40,7 @@
         bindchange="onCategoryChange"
       >
         <view class="picker {{formData.categoryId ? '' : 'placeholder'}}">
-          {{formData.categoryId ? categories[formData.categoryId-1].name : '请选择商品分类'}}
+          {{formData.categoryId ? categoryMap[formData.categoryId] : '请选择商品分类'}}
         </view>
       </picker>
     </view>
@@ -82,6 +83,12 @@
 
   <!-- 提交按钮 -->
   <view class="footer">
+    <button 
+      class="back-btn" 
+      bindtap="goBack"
+    >
+      返回
+    </button>
     <button 
       class="submit-btn" 
       type="primary"

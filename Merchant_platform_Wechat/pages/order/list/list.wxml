@@ -45,7 +45,7 @@
       class="order-item"
       wx:for="{{orderList}}"
       wx:key="id"
-      bindtap="goToDetail"
+      catchtap="goToDetail"
       data-id="{{item.id}}"
     >
       <view class="order-header">
@@ -71,19 +71,19 @@
       <view class="order-footer">
         <view class="btn-group">
           <button 
-            wx:if="{{item.status === 1}}"
+            wx:if="{{item.status === 2}}"
             class="btn" 
             catchtap="confirmOrder"
             data-id="{{item.id}}"
           >接单</button>
           <button 
-            wx:if="{{item.status === 2}}"
+            wx:if="{{item.status === 3}}"
             class="btn" 
             catchtap="completeOrder"
             data-id="{{item.id}}"
           >完成</button>
           <button 
-            wx:if="{{item.status === 1}}"
+            wx:if="{{item.status === 2}}"
             class="btn btn-cancel" 
             catchtap="cancelOrder"
             data-id="{{item.id}}"

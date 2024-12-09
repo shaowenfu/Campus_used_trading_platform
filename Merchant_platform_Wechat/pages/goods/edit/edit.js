@@ -1,5 +1,7 @@
 // pages/goods/edit/edit.js
 import { isDev, mockData } from '../../../utils/config'
+import { request } from '../../../utils/request'
+const app = getApp()
 
 Page({
   data: {
@@ -21,6 +23,7 @@ Page({
     this.setData({
       id: options.id
     })
+    console.log('id:',options.id)
     this.getCategories()
     this.getGoodsDetail()
   },
@@ -30,27 +33,87 @@ Page({
     try {
       if(isDev) {
         const detail = mockData.goods.detail
-        this.setData({
-          formData: detail,
-          imageUrl: detail.image
-        })
+        if(detail.image) {
+          const fs = wx.getFileSystemManager()
+          try {
+            const base64 = await new Promise((resolve, reject) => {
+              fs.readFile({
+                filePath: detail.image,
+                encoding: 'base64',
+                success: (res) => resolve(res.data),
+                fail: (err) => reject(err)
+              })
+            })
+            const imageUrl = `data:image/png;base64,${base64}`
+            this.setData({
+              formData: detail,
+              imageUrl: imageUrl
+            })
+          } catch(err) {
+            console.error('读取图片失败:', err)
+            this.setData({
+              formData: {
+                ...detail,
+                image: ''
+              },
+              imageUrl: ''
+            })
+          }
+        } else {
+          this.setData({
+            formData: detail,
+            imageUrl: detail.image
+          })
+        }
         return
       }
 
-      const res = await wx.request({
+      const res = await request({
         url: `/marketer/thing/${this.data.id}`,
         method: 'GET'
       })
-      
-      if(res.data.code === 0) {
-        const detail = res.data.data
-        this.setData({
-          formData: detail,
-          imageUrl: detail.image
-        })
+      console.log('res:', res)
+      if(res.code === 1) {
+        const detail = res.data
+        if(detail.image) {
+          const fs = wx.getFileSystemManager()
+          try {
+            const base64 = await new Promise((resolve, reject) => {
+              fs.readFile({
+                filePath: detail.image,
+                encoding: 'base64',
+                success: (res) => resolve(res.data),
+                fail: (err) => reject(err)
+              })
+            })
+            const imageUrl = `data:image/png;base64,${base64}`
+            this.setData({
+              formData: detail,
+              imageUrl: imageUrl
+            })
+          } catch(err) {
+            console.error('读取图片失败:', err)
+            this.setData({
+              formData: {
+                ...detail,
+                image: ''
+              },
+              imageUrl: ''
+            })
+          }
+        } else {
+          this.setData({
+            formData: detail,
+            imageUrl: detail.image
+          })
+        }
       }
     } catch(e) {
-      console.error('获取商品详情失败', e)
+      console.error('获取商品详情失败:', e)
+      wx.showToast({
+        title: '获取商品详情失败',
+        icon: 'none'
+      })
     }
   },
 
@@ -64,18 +127,33 @@ Page({
     }
 
     try {
-      const res = await wx.request({
-        url: '/marketer/category/list',
+      console.log('请求分类数据')
+      const res = await request({
+        url: '/marketer/category',
         method: 'GET'
       })
       
-      if(res.data.code === 0) {
-        this.setData({
-          categories: res.data.data
+      console.log('分类数据响应:', res)
+      
+      if(res.code === 1) {
+        const categoryMap = {}
+        res.data.forEach(category => {
+          categoryMap[category.id] = category.name
         })
+        
+        this.setData({
+          categories: res.data,
+          categoryMap: categoryMap
+        })
+        console.log('设置后的categories:', this.data.categories)
+        console.log('设置后的categoryMap:', this.data.categoryMap)
       }
     } catch(e) {
       console.error('获取分类失败', e)
+      wx.showToast({
+        title: '获取分类失败',
+        icon: 'none'
+      })
     }
   },
 
@@ -83,9 +161,11 @@ Page({
   onCategoryChange(e) {
     const index = e.detail.value
     const category = this.data.categories[index]
+    console.log('选择的分类:', category)
     this.setData({
       'formData.categoryId': category.id
     })
+    console.log('设置后的categoryId:', this.data.formData.categoryId)
   },
 
   // 输入商品名称
@@ -119,43 +199,59 @@ Page({
   // 选择图片
   async chooseImage() {
     try {
-      const res = await wx.chooseImage({
+      const res = await wx.chooseMedia({
         count: 1,
+        mediaType: ['image'],
         sizeType: ['compressed'],
         sourceType: ['album', 'camera']
       })
-
-      const tempFilePath = res.tempFilePaths[0]
       
-      // 开发模式直接使用临时路径
-      if(isDev) {
-        this.setData({
-          imageUrl: tempFilePath,
-          'formData.image': tempFilePath
-        })
-        return
-      }
+      const tempFilePath = res.tempFiles[0].tempFilePath
+      console.log('临时文件路径:', tempFilePath)
 
-      // 上传图片
-      const uploadRes = await wx.uploadFile({
-        url: '/marketer/file/upload',
-        filePath: tempFilePath,
-        name: 'file'
-      })
-
-      const data = JSON.parse(uploadRes.data)
-      if(data.code === 0) {
-        this.setData({
-          imageUrl: data.data.url,
-          'formData.image': data.data.url
+      try {
+        // 使用文件系统管理器保存文件
+        const fs = wx.getFileSystemManager()
+        const saveRes = await new Promise((resolve, reject) => {
+          fs.saveFile({
+            tempFilePath: tempFilePath,
+            success: (res) => resolve(res),
+            fail: (err) => reject(err)
+          })
         })
-      } else {
+        
+        console.log('保存结果:', saveRes)
+        
+        // 读取图片为base64
+        const base64 = await new Promise((resolve, reject) => {
+          fs.readFile({
+            filePath: saveRes.savedFilePath,
+            encoding: 'base64',
+            success: (res) => resolve(res.data),
+            fail: (err) => reject(err)
+          })
+        })
+        
+        // 构造可展示的图片路径
+        const imageUrl = `data:image/png;base64,${base64}`
+        
+        this.setData({
+          imageUrl: imageUrl,  // 使用base64预览
+          'formData.image': saveRes.savedFilePath  // 存储永久路径
+        })
+        
         wx.showToast({
-          title: '图片上传失败',
+          title: '上传成功'
+        })
+      } catch(err) {
+        console.error('保存图片失败:', err)
+        wx.showToast({
+          title: '保存图片失败',
           icon: 'none'
         })
       }
     } catch(e) {
+      console.error('选择图片失败:', e)
       wx.showToast({
         title: '图片选择失败',
         icon: 'none'
@@ -194,13 +290,6 @@ Page({
       })
       return false
     }
-    if(!image) {
-      wx.showToast({
-        title: '请上传商品图片',
-        icon: 'none'
-      })
-      return false
-    }
     return true
   },
 
@@ -215,29 +304,55 @@ Page({
       if(isDev) {
         wx.showToast({ title: '修改成功' })
         setTimeout(() => {
-          wx.navigateBack()
+          wx.switchTab({
+            url: '/pages/goods/list/list'
+          })
         }, 1500)
         return
       }
 
-      const res = await wx.request({
-        url: `/marketer/thing/${this.data.id}`,
+      // 构造符合后端ThingDTO格式的数据
+      const thingDTO = {
+        id: Number(this.data.id),
+        name: this.data.formData.name,
+        categoryId: Number(this.data.formData.categoryId),
+        amount: Number(this.data.formData.amount),
+        price: Number(this.data.formData.price),
+        image: this.data.formData.image,
+        description: this.data.formData.description,
+        status: 1,  // 默认上架
+        tradeStyle: 1  // 默认自取
+      }
+
+      console.log('提交的修改数据:', thingDTO)
+
+      const res = await request({
+        url: `/marketer/thing`,
         method: 'PUT',
-        data: this.data.formData
+        data: thingDTO,
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        }
       })
+
       
-      if(res.data.code === 0) {
+      console.log('修改响应:', res)
+      
+      if(res.code === 1) {
         wx.showToast({ title: '修改成功' })
         setTimeout(() => {
-          wx.navigateBack()
+          wx.switchTab({
+            url: '/pages/goods/list/list'
+          })
         }, 1500)
       } else {
         wx.showToast({
-          title: res.data.msg,
+          title: res.msg || '修改失败',
           icon: 'none'
         })
       }
     } catch(e) {
+      console.error('修改商品失败:', e)
       wx.showToast({
         title: '修改失败',
         icon: 'none'
@@ -247,9 +362,9 @@ Page({
     }
   },
 
-  goToList() {
-    wx.navigateBack({
-      delta: 1
+  goBack() {
+    wx.switchTab({
+      url: '/pages/goods/list/list'
     })
   }
 })
