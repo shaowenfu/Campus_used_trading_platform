@@ -1,6 +1,7 @@
 // pages/goods/list/list.js
 import { isDev, mockData } from '../../../utils/config'
 import { request } from '../../../utils/request'
+
 Page({
   data: {
     goodsList: [],
@@ -28,22 +29,22 @@ Page({
 
   // 获取商品分类
   async getCategories() {
-    try {
-      if(isDev) {
-        this.setData({
-          categories: mockData.goods.categories
-        })
-        return
-      }
+    if(isDev) {
+      this.setData({
+        categories: mockData.goods.categories
+      })
+      return
+    }
 
+    try {
       const res = await request({
         url: '/marketer/category/list',
         method: 'GET'
       })
       
-      if(res.data.code === 0) {
+      if(res.code === 1) {
         this.setData({
-          categories: res.data.data
+          categories: res.data
         })
       }
     } catch(e) {
@@ -72,7 +73,7 @@ Page({
         data: this.data.queryParams
       })
       
-      if(res.data.code === 0) {
+      if(res.code === 1) {
         const { records, total } = res.data.data
         this.setData({
           goodsList: this.data.queryParams.page === 1 ? records : [...this.data.goodsList, ...records],
@@ -128,7 +129,7 @@ Page({
         method: 'PUT'
       })
       
-      if(res.data.code === 0) {
+      if(res.code === 1) {
         wx.showToast({
           title: newStatus === 1 ? '上架成功' : '下架成功'
         })

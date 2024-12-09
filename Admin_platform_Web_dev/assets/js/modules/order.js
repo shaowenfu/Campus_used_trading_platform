@@ -69,7 +69,7 @@ class OrderManager {
                 ...this.searchParams
             });
 
-            if (result.code === 0 && result.data) {
+            if (result.code === 1 && result.data) {
                 this.total = result.data.total;
                 this.renderOrderTable(result.data.records);
                 this.renderPagination();
@@ -85,7 +85,7 @@ class OrderManager {
     async loadOrderStatistics() {
         try {
             const result = await API.order.getStatistics();
-            if (result.code === 0 && result.data) {
+            if (result.code === 1 && result.data) {
                 // 更新概览页的订单统计数据
                 const orderStats = document.querySelector('#overview .stat-card:nth-child(3) .number');
                 if (orderStats) {
@@ -171,7 +171,7 @@ class OrderManager {
     async showOrderDetails(id) {
         try {
             const result = await API.order.getDetails(id);
-            if (result.code === 0 && result.data) {
+            if (result.code === 1 && result.data) {
                 this.renderOrderDetailsModal(result.data);
             } else {
                 throw new Error(result.msg || '获取订单详情失败');
@@ -262,7 +262,7 @@ class OrderManager {
                 cancelReason: reason
             });
 
-            if (result.code === 0) {
+            if (result.code === 1) {
                 alert('订单已取消');
                 this.closeCancelModal();
                 this.loadOrderList();

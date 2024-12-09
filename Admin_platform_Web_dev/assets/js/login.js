@@ -1,5 +1,5 @@
 // 开发模式标志
-const isDev = true; // 开发时设为 true，部署时需要设为 false
+const isDev = false; // 开发时设为 true，部署时需要设为 false
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
@@ -25,9 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
+            // 打印请求地址
+            console.log(`请求地址：${API.baseUrl}/admin/login`);
+            // 打印请求参数
+            console.log(`请求参数：username=${username}, password=${password}`);
+            
             const result = await API.login(username, password);
             
-            if (result.code === 0 && result.data) {
+            if (result.code === 1 && result.data) {
                 // 登录成功，保存token
                 localStorage.setItem('adminToken', result.data.token);
                 localStorage.setItem('adminInfo', JSON.stringify({

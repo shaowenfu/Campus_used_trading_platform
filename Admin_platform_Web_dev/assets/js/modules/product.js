@@ -37,7 +37,7 @@ class ProductManager {
     async loadCategoryOptions() {
         try {
             const result = await API.category.getList({ pageSize: 100 });
-            if (result.code === 0 && result.data) {
+            if (result.code === 1 && result.data) {
                 const options = result.data.records.map(category => `
                     <option value="${category.id}">${category.name}</option>
                 `).join('');
@@ -59,7 +59,7 @@ class ProductManager {
                 status: this.status
             });
 
-            if (result.code === 0 && result.data) {
+            if (result.code === 1 && result.data) {
                 this.total = result.data.total;
                 this.renderProductTable(result.data.records);
                 this.renderPagination();
@@ -137,7 +137,7 @@ class ProductManager {
     async toggleStatus(id, status) {
         try {
             const result = await API.thing.updateStatus(id, status);
-            if (result.code === 0) {
+            if (result.code === 1) {
                 alert(status === 1 ? '商品已上架' : '商品已下架');
                 this.loadProductList();
             } else {

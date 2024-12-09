@@ -3,18 +3,28 @@ const app = getApp()
 // 封装请求方法
 export const request = (options) => {
   return new Promise((resolve, reject) => {
+    // 如果不是登录接口，则添加token
+    if (!options.url.includes('/marketer/login')) {
+      const token = wx.getStorageSync('token')
+      options.header = {
+        ...options.header,
+        'Authorization': token
+      }
+    }
+
     wx.request({
       ...options,
       url: `${app.globalData.baseUrl}${options.url}`,
       success: (res) => {
-          console.log( `发送请求URL:${options.url}`);
-          console.log("     这里是回调函数");
+        console.log(`发送请求URL:${options.url}`);
+        console.log("请求响应数据:", res.data);
         if(res.data.code === 1) {
-            console.log("     这里是当res.data.code ===1,请求成功");
-            console.log(`"     请求结果：${res.data}"`)
-          resolve(res.data)
+          resolve({
+            code: res.data.code,
+            msg: res.data.msg,
+            data: res.data.data || res.data
+          })
         } else {
-            console.log("     这里是当res.data.code === 0,请求失败");
           reject(res.data)
           wx.showToast({
             title: res.data.msg || '请求失败',

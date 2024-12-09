@@ -1,6 +1,5 @@
 // pages/goods/add/add.js
 import { isDev, mockData } from '../../../utils/config'
-import { request } from '../../../utils/request'
 
 Page({
   data: {
@@ -36,7 +35,7 @@ Page({
         method: 'GET'
       })
       
-      if(res.data.code === 0) {
+      if(res.code === 1) {
         this.setData({
           categories: res.data.data
         })
@@ -193,7 +192,7 @@ Page({
         data: this.data.formData
       })
       
-      if(res.data.code === 0) {
+      if(res.code === 1) {
         wx.showToast({ title: '添加成功' })
         setTimeout(() => {
           wx.navigateBack()

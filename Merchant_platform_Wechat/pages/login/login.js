@@ -89,13 +89,24 @@ Page({
         method: 'POST',
         data: {
           username,
-          password,
-          loginType: 'account'
-        }
+          password
+       }
       })
 
+      // 存储基本信息
       wx.setStorageSync('token', res.data.token)
       wx.setStorageSync('userInfo', res.data)
+      
+      // 分别存储用户详细信息
+      wx.setStorageSync('userId', res.data.id)
+      wx.setStorageSync('userName', res.data.userName)
+      wx.setStorageSync('name', res.data.name)
+
+      //分别打印解析出的所有信息
+      console.log(`userId: ${res.data.id}`);
+      console.log(`userName: ${res.data.userName}`);
+      console.log(`name: ${res.data.name}`);
+      console.log(`token: ${res.data.token}`);  
       
       wx.showToast({
         title: '登录成功'

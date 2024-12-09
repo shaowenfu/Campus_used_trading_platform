@@ -39,7 +39,7 @@ class NewsManager {
                 pageSize: this.pageSize
             });
 
-            if (result.code === 0 && result.data) {
+            if (result.code === 1 && result.data) {
                 this.total = result.data.total;
                 this.renderNewsTable(result.data.records);
                 this.renderPagination();
@@ -135,7 +135,7 @@ class NewsManager {
     async loadNewsData(id) {
         try {
             const result = await API.news.getById(id);
-            if (result.code === 0 && result.data) {
+            if (result.code === 1 && result.data) {
                 const news = result.data;
                 document.getElementById('newsId').value = news.id;
                 document.getElementById('newsDetail').value = news.detail;
@@ -169,7 +169,7 @@ class NewsManager {
 
         try {
             const result = await (id ? API.news.edit(formData) : API.news.add(formData));
-            if (result.code === 0) {
+            if (result.code === 1) {
                 alert(id ? '编辑成功' : '发布成功');
                 this.closeNewsModal();
                 this.loadNewsList();
@@ -185,7 +185,7 @@ class NewsManager {
     async toggleStatus(id, status) {
         try {
             const result = await API.news.updateStatus(id, status);
-            if (result.code === 0) {
+            if (result.code === 1) {
                 alert(status === 1 ? '新闻已启用' : '新闻已禁用');
                 this.loadNewsList();
             } else {
@@ -204,7 +204,7 @@ class NewsManager {
 
         try {
             const result = await API.news.delete(id);
-            if (result.code === 0) {
+            if (result.code === 1) {
                 alert('删除成功');
                 this.loadNewsList();
             } else {
