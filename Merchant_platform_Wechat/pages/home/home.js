@@ -5,12 +5,12 @@ Page({
   data: {
     businessData: {}, // 运营数据
     dishOverview: {}, // 商品总览
-    orderOverview: {} // 订单总览
+    thingOverview: {} // 订单总览
   },
 
   onLoad() {
     this.getBusinessData()
-    this.getDishOverview()
+    this.getThingData()
     this.getOrderOverview()
   },
 
@@ -48,25 +48,28 @@ Page({
   },
 
   // 获取商品总览
-  async getDishOverview() {
+  async getThingData() {
     try {
       if (isDev) {
         this.setData({
-          dishOverview: mockData.workspace.dishOverview
+            thingOverview: mockData.workspace.thingOverview
         })
         return
       }
-
       const res = await request({
         url: '/marketer/workspace/overviewThings',
         method: 'GET'
       })
 
-      if (res.data.code === 1) {
+      if (res.code === 1) {
         this.setData({
-          dishOverview: res.data.data
+          thingOverview: {
+            sold: res.data.sold,          // 在售商品数
+            discontinued: res.data.discontinued  // 已下架商品数
+          }
         })
       }
+      console.log('设置后的thingsData:', this.data.thingOverview)
     } catch (e) {
       console.error('获取商品总览失败', e)
     }

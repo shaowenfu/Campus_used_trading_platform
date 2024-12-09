@@ -23,11 +23,11 @@
     <view class="section-title">商品总览</view>
     <view class="dish-overview">
       <view class="data-item">
-        <view class="num">{{dishOverview.sold}}</view>
+        <view class="num">{{thingOverview.sold}}</view>
         <view class="label">在售商品</view>
       </view>
       <view class="data-item">
-        <view class="num">{{dishOverview.discontinued}}</view>
+        <view class="num">{{thingOverview.discontinued}}</view>
         <view class="label">已下架</view>
       </view>
     </view>

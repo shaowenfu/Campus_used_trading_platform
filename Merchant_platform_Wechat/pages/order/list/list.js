@@ -22,12 +22,12 @@ Page({
     total: 0,
     loading: false,
     statusOptions: [
-      { text: '全部', value: '' },
-      { text: '待接单', value: 'pending' },
-      { text: '进行中', value: 'processing' },
-      { text: '已完成', value: 'completed' },
-      { text: '已取消', value: 'cancelled' }
-    ],
+        { text: '全部', value: '' },
+        { text: '待接单', value: 2 },
+        { text: '进行中', value: 3 },
+        { text: '已完成', value: 4 },
+        { text: '已取消', value: 5 }
+      ],      
     searchValue: ''  // 搜索框的值
   },
 
@@ -124,7 +124,7 @@ Page({
       if(res.code === 1) {
         this.setData({
           orderStatistics: {
-            deliveryInProgress: res.data.deliveryInProgress,
+            confirmed: res.data.confirmed,
             toBeConfirmed: res.data.toBeConfirmed,
           }
         })

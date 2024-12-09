@@ -15,7 +15,7 @@ export const mockData = {
     },
     
     // 商品总览
-    dishOverview: {
+    thingOverview: {
       sold: 108,          // 在售商品数
       discontinued: 12    // 已下架商品数
     },
@@ -116,7 +116,7 @@ export const mockData = {
   // 订单统计示例数据
   orderStatistics: {
     toBeConfirmed: 2,
-    deliveryInProgress: 3
+    confirmed: 3
   },
   
   // 商品相关数据

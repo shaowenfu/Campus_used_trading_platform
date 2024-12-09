@@ -7,7 +7,7 @@
       <text class="label">待接单</text>
     </view>
     <view class="stat-item">
-      <text class="num">{{orderStatistics.deliveryInProgress}}</text>
+      <text class="num">{{orderStatistics.confirmed}}</text>
       <text class="label">进行中</text>
     </view>
   </view>
