@@ -52,7 +52,7 @@ Page({
   },
 
   /**
-   * 生命周���函数--监听页面显示
+   * 生命周期函数--监听页面显示
    */
   onShow() {
 
@@ -176,8 +176,9 @@ Page({
 
   // 切换订单状态
   onStatusChange(e) {
+    console.log('e.currentTarget.dataset.value:', e.currentTarget.dataset.value)
     this.setData({
-      'queryParams.status': e.detail,
+      'queryParams.status': e.currentTarget.dataset.value,
       'queryParams.page': 1,
       orderList: []
     })
