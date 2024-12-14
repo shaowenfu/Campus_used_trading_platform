@@ -1,0 +1,99 @@
+/* 整体布局 */
+.app-container {
+    display: grid;
+    grid-template-areas: 
+        "header header"
+        "sidebar main";
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 60px 1fr;
+    height: 100vh;
+}
+
+/* 顶部导航栏 */
+.app-header {
+    grid-area: header;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+.header-left h1 {
+    font-size: 18px;
+    color: #1890ff;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e6f7ff;
+}
+
+/* 侧边栏 */
+.app-sidebar {
+    grid-area: sidebar;
+    background: #001529;
+    padding: 20px 0;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.menu-item:hover {
+    background: #1890ff;
+}
+
+.menu-item.active {
+    background: #1890ff;
+}
+
+/* 主内容区 */
+.app-main {
+    grid-area: main;
+    background: #f0f2f5;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 768px) {
+    .app-container {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "header"
+            "main";
+    }
+
+    .app-sidebar {
+        display: none;
+    }
+} 

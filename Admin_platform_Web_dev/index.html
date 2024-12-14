@@ -3,30 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>校园二手交易平台 - 管理登录</title>
-    <link rel="stylesheet" href="./assets/css/reset.css">
-    <link rel="stylesheet" href="./assets/css/login.css">
+    <title>校园二手交易平台 - 管理系统</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-box">
-            <h1>管理员登录</h1>
-            <form id="loginForm" class="login-form">
-                <div class="form-item">
-                    <label for="username">用户名</label>
-                    <input type="text" id="username" name="username" required>
+    <div class="app-container">
+        <!-- 顶部导航栏 -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1>校园二手交易平台</h1>
+            </div>
+            <div class="header-right">
+                <span class="user-info">
+                    <i class="user-avatar"></i>
+                    <span id="userName">加载中...</span>
+                </span>
+                <button class="btn btn-logout" id="logoutBtn">退出登录</button>
+            </div>
+        </header>
+
+        <!-- 左侧菜单 -->
+        <aside class="app-sidebar">
+            <nav class="sidebar-menu">
+                <div class="menu-item" data-page="dashboard">
+                    <i class="icon-dashboard"></i>
+                    <span>控制台</span>
                 </div>
-                <div class="form-item">
-                    <label for="password">密码</label>
-                    <input type="password" id="password" name="password" required>
+                <div class="menu-item" data-page="merchant">
+                    <i class="icon-merchant"></i>
+                    <span>商户管理</span>
                 </div>
-                <div class="form-item">
-                    <button type="submit">登录</button>
+                <div class="menu-item" data-page="category">
+                    <i class="icon-category"></i>
+                    <span>商品分类</span>
                 </div>
-            </form>
-        </div>
+                <div class="menu-item" data-page="news">
+                    <i class="icon-news"></i>
+                    <span>新闻管理</span>
+                </div>
+                <div class="menu-item" data-page="order">
+                    <i class="icon-order"></i>
+                    <span>订单管理</span>
+                </div>
+                <div class="menu-item" data-page="comment">
+                    <i class="icon-comment"></i>
+                    <span>评论管理</span>
+                </div>
+                <div class="menu-item" data-page="product">
+                    <i class="icon-product"></i>
+                    <span>商品管理</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="app-main">
+            <div id="pageContainer"></div>
+        </main>
     </div>
-    <script src="./assets/js/api.js"></script>
-    <script src="./assets/js/login.js"></script>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/index.js"></script>
 </body>
 </html> 

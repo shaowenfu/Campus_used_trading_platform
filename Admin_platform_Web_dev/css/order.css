@@ -1,0 +1,114 @@
+/* 订单管理页面样式 */
+.order-container {
+    padding: 20px;
+}
+
+/* 操作栏 */
+.operation-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 120px;
+}
+
+/* 订单列表 */
+.order-list {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* 状态标签 */
+.status-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.status-pending {
+    background: #fff7e6;
+    color: #fa8c16;
+}
+
+.status-confirmed {
+    background: #e6f7ff;
+    color: #1890ff;
+}
+
+.status-completed {
+    background: #f6ffed;
+    color: #52c41a;
+}
+
+.status-cancelled {
+    background: #fff1f0;
+    color: #f5222d;
+}
+
+/* 订单详情样式 */
+.order-detail {
+    padding: 20px;
+}
+
+.detail-section {
+    margin-bottom: 24px;
+}
+
+.detail-section h4 {
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-row {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.detail-row .label {
+    width: 100px;
+    color: #666;
+}
+
+/* 金额样式 */
+.amount {
+    color: #f5222d;
+    font-weight: bold;
+}
+
+/* 操作按钮组 */
+.btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+/* 商品表格样式 */
+.product-table {
+    width: 100%;
+    margin-top: 16px;
+}
+
+.product-table th,
+.product-table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.product-table th {
+    background: #fafafa;
+}
+
+/* 模态框样式继承自merchant.css */ 

@@ -1,0 +1,68 @@
+/* 新闻管理页面样式 */
+.news-container {
+    padding: 20px;
+}
+
+/* 操作栏样式继承自merchant.css */
+
+/* 新闻列表 */
+.news-list {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* 标题列宽度限制 */
+.title-column {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 摘要列宽度限制 */
+.summary-column {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 大号模态框 */
+.modal-lg {
+    width: 800px;
+}
+
+/* 文本域样式 */
+textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+/* 状态标签 */
+.status-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.status-published {
+    background: #f6ffed;
+    color: #52c41a;
+}
+
+.status-draft {
+    background: #e6f7ff;
+    color: #1890ff;
+}
+
+/* 操作按钮组 */
+.btn-group {
+    display: flex;
+    gap: 8px;
+} 

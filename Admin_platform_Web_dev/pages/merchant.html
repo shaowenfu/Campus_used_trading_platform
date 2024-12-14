@@ -1,0 +1,83 @@
+<div class="merchant-container">
+    <!-- 搜索和操作栏 -->
+    <div class="operation-bar">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="输入商户名称搜索" class="search-input">
+            <button class="btn btn-primary" id="searchBtn">搜索</button>
+        </div>
+        <div class="action-box">
+            <button class="btn btn-success" id="addMerchantBtn">添加商户</button>
+        </div>
+    </div>
+
+    <!-- 商户列表 -->
+    <div class="merchant-list card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>商户名称</th>
+                        <th>联系人</th>
+                        <th>联系电话</th>
+                        <th>状态</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="merchantList">
+                    <tr>
+                        <td colspan="7" class="text-center">加载中...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 分页器 -->
+    <div class="pagination-container">
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- 添加/编辑商户弹窗 -->
+    <div class="modal" id="merchantModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">添加商户</h3>
+                <span class="close" id="closeModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="merchantForm">
+                    <div class="form-item">
+                        <label>商户名称</label>
+                        <input type="text" id="merchantName" name="merchantName" required>
+                    </div>
+                    <div class="form-item">
+                        <label>联系人</label>
+                        <input type="text" id="contactPerson" name="contactPerson" required>
+                    </div>
+                    <div class="form-item">
+                        <label>联系电话</label>
+                        <input type="tel" id="contactPhone" name="contactPhone" required>
+                    </div>
+                    <div class="form-item">
+                        <label>商户密码</label>
+                        <input type="password" id="password" name="password">
+                        <small>编辑时留空表示不修改密码</small>
+                    </div>
+                    <div class="form-item">
+                        <label>状态</label>
+                        <select id="status" name="status">
+                            <option value="1">正常</option>
+                            <option value="0">禁用</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" id="cancelBtn">取消</button>
+                <button class="btn btn-primary" id="saveBtn">保存</button>
+            </div>
+        </div>
+    </div>
+</div> 

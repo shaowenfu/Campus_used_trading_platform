@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园二手交易平台 - 管理员登录</title>
+    <style>
+        /* 内联关键CSS，确保基本样式正常显示 */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .login-box {
+            width: 400px;
+            padding: 40px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1>管理员登录</h1>
+            <form id="loginForm" onsubmit="return false;">
+                <div class="form-item">
+                    <input type="text" id="username" name="username" placeholder="请输入用户名" required>
+                </div>
+                <div class="form-item">
+                    <input type="password" id="password" name="password" placeholder="请输入密码" required>
+                </div>
+                <div class="form-item">
+                    <button type="submit" id="loginBtn">登录</button>
+                </div>
+                <div class="error-msg" id="errorMsg"></div>
+            </form>
+        </div>
+    </div>
+    <script src="/js/api.js"></script>
+    <script src="/js/login.js"></script>
+</body>
+</html> 

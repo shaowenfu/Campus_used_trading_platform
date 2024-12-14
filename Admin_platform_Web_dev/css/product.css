@@ -1,0 +1,96 @@
+/* 商品管理页面样式 */
+.product-container {
+    padding: 20px;
+}
+
+/* 操作栏样式继承自order.css */
+
+/* 商品列表 */
+.product-list {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* 商品图片样式 */
+.product-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* 图片上传器 */
+.image-uploader {
+    margin-top: 8px;
+}
+
+.image-preview {
+    width: 120px;
+    height: 120px;
+    border: 1px dashed #ddd;
+    border-radius: 4px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.image-preview:empty::before {
+    content: '点击上传图片';
+    color: #999;
+}
+
+/* 价格样式 */
+.price {
+    color: #f5222d;
+    font-weight: bold;
+}
+
+/* 库存样式 */
+.stock-warning {
+    color: #faad14;
+}
+
+.stock-danger {
+    color: #f5222d;
+}
+
+/* 状态标签 */
+.status-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.status-online {
+    background: #f6ffed;
+    color: #52c41a;
+}
+
+.status-offline {
+    background: #fff1f0;
+    color: #f5222d;
+}
+
+/* 操作按钮组 */
+.btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+/* 表单样式 */
+.form-item textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+/* 模态框样式继承自merchant.css */ 

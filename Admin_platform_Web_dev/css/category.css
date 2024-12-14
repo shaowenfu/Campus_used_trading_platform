@@ -1,0 +1,65 @@
+/* 分类管理页面样式 */
+.category-container {
+    padding: 20px;
+}
+
+/* 操作栏 */
+.operation-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+}
+
+.search-input {
+    width: 200px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* 分类列表 */
+.category-list {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* 分页器样式继承自merchant.css */
+
+/* 模态框样式继承自merchant.css */
+
+/* 状态标签 */
+.status-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.status-normal {
+    background: #f6ffed;
+    color: #52c41a;
+}
+
+.status-disabled {
+    background: #fff1f0;
+    color: #f5222d;
+}
+
+/* 操作按钮组 */
+.btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+/* 排序列样式 */
+.sort-column {
+    width: 80px;
+    text-align: center;
+} 

@@ -1,0 +1,80 @@
+/* 评论管理页面样式 */
+.comment-container {
+    padding: 20px;
+}
+
+/* 操作栏样式继承自order.css */
+
+/* 评论列表 */
+.comment-list {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* 评论内容列宽度限制 */
+.content-column {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 评分样式 */
+.rating {
+    color: #fadb14;
+}
+
+.rating::after {
+    content: '★';
+    margin-left: 4px;
+}
+
+/* 状态标签 */
+.status-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.status-approved {
+    background: #f6ffed;
+    color: #52c41a;
+}
+
+.status-pending {
+    background: #e6f7ff;
+    color: #1890ff;
+}
+
+/* 评论详情样式 */
+.comment-detail {
+    padding: 20px;
+}
+
+.detail-row {
+    display: flex;
+    margin-bottom: 16px;
+}
+
+.detail-row .label {
+    width: 100px;
+    color: #666;
+}
+
+.detail-row .content {
+    flex: 1;
+    white-space: pre-wrap;
+    word-break: break-all;
+    line-height: 1.5;
+}
+
+/* 操作按钮组 */
+.btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+/* 模态框样式继承自merchant.css */ 

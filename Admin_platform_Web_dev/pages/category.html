@@ -1,0 +1,74 @@
+<div class="category-container">
+    <!-- 操作栏 -->
+    <div class="operation-bar">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="输入分类名称搜索" class="search-input">
+            <button class="btn btn-primary" id="searchBtn">搜索</button>
+        </div>
+        <div class="action-box">
+            <button class="btn btn-success" id="addCategoryBtn">添加分类</button>
+        </div>
+    </div>
+
+    <!-- 分类列表 -->
+    <div class="category-list card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>分类名称</th>
+                        <th>排序</th>
+                        <th>状态</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="categoryList">
+                    <tr>
+                        <td colspan="6" class="text-center">加载中...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 分页器 -->
+    <div class="pagination-container">
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- 添加/编辑分类弹窗 -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">添加分类</h3>
+                <span class="close" id="closeModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <div class="form-item">
+                        <label>分类名称</label>
+                        <input type="text" id="categoryName" name="categoryName" required>
+                    </div>
+                    <div class="form-item">
+                        <label>排序</label>
+                        <input type="number" id="sort" name="sort" value="0" min="0">
+                        <small>数字越大排序越靠前</small>
+                    </div>
+                    <div class="form-item">
+                        <label>状态</label>
+                        <select id="status" name="status">
+                            <option value="1">正常</option>
+                            <option value="0">禁用</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" id="cancelBtn">取消</button>
+                <button class="btn btn-primary" id="saveBtn">保存</button>
+            </div>
+        </div>
+    </div>
+</div> 

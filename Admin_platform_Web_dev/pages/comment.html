@@ -1,0 +1,85 @@
+<div class="comment-container">
+    <!-- 操作栏 -->
+    <div class="operation-bar">
+        <div class="search-box">
+            <select id="statusFilter" class="filter-select">
+                <option value="">全部状态</option>
+                <option value="1">已审核</option>
+                <option value="0">待审核</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="输入商品名称搜索" class="search-input">
+            <button class="btn btn-primary" id="searchBtn">搜索</button>
+        </div>
+    </div>
+
+    <!-- 评论列表 -->
+    <div class="comment-list card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>商品名称</th>
+                        <th>评分</th>
+                        <th>评论内容</th>
+                        <th>评论人</th>
+                        <th>状态</th>
+                        <th>评论时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="commentList">
+                    <tr>
+                        <td colspan="8" class="text-center">加载中...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 分页器 -->
+    <div class="pagination-container">
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- 评论详情弹窗 -->
+    <div class="modal" id="commentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">评论详情</h3>
+                <span class="close" id="closeModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="comment-detail">
+                    <div class="detail-row">
+                        <span class="label">商品名称：</span>
+                        <span id="productName"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">评分：</span>
+                        <span id="rating" class="rating"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">评论内容：</span>
+                        <div id="content" class="content"></div>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">评论人：</span>
+                        <span id="userName"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">评论时间：</span>
+                        <span id="createTime"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">状态：</span>
+                        <span id="status"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <!-- 根据评论状态动态显示按钮 -->
+            </div>
+        </div>
+    </div>
+</div> 
