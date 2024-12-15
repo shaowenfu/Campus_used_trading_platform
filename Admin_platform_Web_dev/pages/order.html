@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="css/order.css">
+
 <div class="order-container">
     <!-- 操作栏 -->
     <div class="operation-bar">
@@ -21,8 +23,11 @@
                 <thead>
                     <tr>
                         <th>订单号</th>
-                        <th>商户名称</th>
-                        <th>订单金额</th>
+                        <th>用户名</th>
+                        <th>收货人</th>
+                        <th>联系电话</th>
+                        <th>收货地址</th>
+                        <th>金额</th>
                         <th>状态</th>
                         <th>下单时间</th>
                         <th>操作</th>
@@ -30,7 +35,7 @@
                 </thead>
                 <tbody id="orderList">
                     <tr>
-                        <td colspan="6" class="text-center">加载中...</td>
+                        <td colspan="9" class="text-center">加载中...</td>
                     </tr>
                 </tbody>
             </table>
@@ -58,12 +63,32 @@
                             <span id="orderNo"></span>
                         </div>
                         <div class="detail-row">
-                            <span class="label">商户名称：</span>
-                            <span id="merchantName"></span>
+                            <span class="label">用户名：</span>
+                            <span id="userName"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">收货人：</span>
+                            <span id="consignee"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">联系电话：</span>
+                            <span id="phone"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">收货地址：</span>
+                            <span id="address"></span>
                         </div>
                         <div class="detail-row">
                             <span class="label">订单金额：</span>
                             <span id="amount"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">支付方式：</span>
+                            <span id="payMethod"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">支付状态：</span>
+                            <span id="payStatus"></span>
                         </div>
                         <div class="detail-row">
                             <span class="label">订单状态：</span>
@@ -71,7 +96,11 @@
                         </div>
                         <div class="detail-row">
                             <span class="label">下单时间：</span>
-                            <span id="createTime"></span>
+                            <span id="orderTime"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">备注：</span>
+                            <span id="remark"></span>
                         </div>
                     </div>
                     <div class="detail-section">
@@ -79,6 +108,7 @@
                         <table class="table" id="productTable">
                             <thead>
                                 <tr>
+                                    <th>商品图片</th>
                                     <th>商品名称</th>
                                     <th>单价</th>
                                     <th>数量</th>
@@ -91,7 +121,7 @@
                 </div>
             </div>
             <div class="modal-footer" id="modalFooter">
-                <!-- 根据订单状态动态显示按钮 -->
+                <!-- 根据订单状态动���显示按钮 -->
             </div>
         </div>
     </div>

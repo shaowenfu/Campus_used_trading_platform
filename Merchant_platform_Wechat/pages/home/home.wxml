@@ -1,7 +1,10 @@
 <view class="home-container">
   <!-- 运营数据 -->
-  <view class="section">
-    <view class="section-title">今日运营</view>
+  <view class="section business-section">
+    <view class="section-title">
+      <text class="title-text">今日运营</text>
+      <view class="title-line"></view>
+    </view>
     <view class="business-data">
       <view class="data-item">
         <view class="num">{{businessData.turnover || 0}}</view>
@@ -19,8 +22,11 @@
   </view>
 
   <!-- 商品总览 -->
-  <view class="section">
-    <view class="section-title">商品总览</view>
+  <view class="section goods-section">
+    <view class="section-title">
+      <text class="title-text">商品总览</text>
+      <view class="title-line"></view>
+    </view>
     <view class="dish-overview">
       <view class="data-item">
         <view class="num">{{thingOverview.sold}}</view>
@@ -34,8 +40,11 @@
   </view>
 
   <!-- 订单管理 -->
-  <view class="section">
-    <view class="section-title">订单管理</view>
+  <view class="section order-section">
+    <view class="section-title">
+      <text class="title-text">订单管理</text>
+      <view class="title-line"></view>
+    </view>
     <view class="order-overview">
       <view class="data-item" data-status="1" bindtap="goToOrders">
         <view class="num">{{orderOverview.unsolvedOrders}}</view>

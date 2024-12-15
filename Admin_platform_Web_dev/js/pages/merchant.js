@@ -49,17 +49,19 @@ class MerchantManager {
     async loadMerchants() {
         try {
             const params = {
-                currentPage: this.currentPage,
+                page: this.currentPage,
                 pageSize: this.pageSize,
                 ...(this.searchText ? { name: this.searchText } : {})
             };
 
-            const response = await API.request('/admin/merchant/conditionSearch', {
+            const response = await API.request('/admin/marketer/page', {
                 method: 'GET',
                 params
             });
-
-            if (response.code === 1) {
+            
+            console.log("response.data:", response.data);
+            console.log("response.data.records:", response.data.records);
+            if (response.code === 1 && response.data) {
                 this.total = response.data.total;
                 this.renderMerchants(response.data.records);
                 this.renderPagination();
@@ -80,24 +82,157 @@ class MerchantManager {
         tbody.innerHTML = merchants.map(merchant => `
             <tr>
                 <td>${merchant.id}</td>
-                <td>${merchant.merchantName}</td>
-                <td>${merchant.contactPerson}</td>
-                <td>${merchant.contactPhone}</td>
+                <td>${merchant.name}</td>
+                <td>${merchant.phone || '-'}</td>
+                <td>${merchant.idNumber || '-'}</td>
+                <td>${this.getAuthorityText(merchant.authority)}</td>
                 <td>
                     <span class="status-tag ${merchant.status === 1 ? 'status-normal' : 'status-disabled'}">
                         ${merchant.status === 1 ? '正常' : '禁用'}
                     </span>
                 </td>
-                <td>${this.formatDate(merchant.createTime)}</td>
                 <td>
-                    <button class="btn btn-primary btn-sm" onclick="merchantManager.editMerchant(${merchant.id})">编辑</button>
-                    <button class="btn ${merchant.status === 1 ? 'btn-danger' : 'btn-success'} btn-sm" 
-                            onclick="merchantManager.toggleStatus(${merchant.id}, ${merchant.status})">
-                        ${merchant.status === 1 ? '禁用' : '启用'}
-                    </button>
+                    <div class="btn-group">
+                        <button class="btn btn-primary btn-sm" onclick="merchantManager.editMerchant(${merchant.id})">编辑</button>
+                        <button class="btn ${merchant.status === 1 ? 'btn-danger' : 'btn-success'} btn-sm" 
+                                onclick="merchantManager.toggleStatus(${merchant.id}, ${merchant.status})">
+                            ${merchant.status === 1 ? '禁用' : '启用'}
+                        </button>
+                    </div>
                 </td>
             </tr>
         `).join('');
+    }
+
+    // 获取权限等级文本
+    getAuthorityText(authority) {
+        switch (authority) {
+            case 1: return '普通商户';
+            case 2: return '高级商户';
+            case 3: return '特级商户';
+            default: return '未知权限';
+        }
+    }
+
+    async editMerchant(id) {
+        try {
+            const response = await API.request(`/admin/marketer/${id}`, {
+                method: 'GET'
+            });
+
+            if (response.code === 1) {
+                this.editingId = id;
+                this.showModal(response.data);
+            }
+        } catch (error) {
+            console.error('获取商户信息失败:', error);
+            this.showError('获取商户信息失败，请重试');
+        }
+    }
+
+    async toggleStatus(id, currentStatus) {
+        try {
+            // 构建新的状态值（1变0，0变1）
+            const newStatus = currentStatus === 1 ? 0 : 1;
+            
+            const response = await API.request(`/admin/marketer/status/${newStatus}`, {
+                method: 'POST',
+                params: { id }, // 使用params传递id参数
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.code === 1) {
+                this.showSuccess(`商户已${newStatus === 1 ? '启用' : '禁用'}`);
+                await this.loadMerchants();
+            }
+        } catch (error) {
+            console.error('修改状态失败:', error);
+            this.showError('修改状态失败，请重试');
+        }
+    }
+
+    async saveMerchant() {
+        const form = document.getElementById('merchantForm');
+        const formData = new FormData(form);
+        
+        // 构建请求数据
+        const data = {
+            name: formData.get('merchantName'),
+            username: formData.get('username'),
+            phone: formData.get('phone'),
+            idNumber: formData.get('idNumber'),
+            ...(this.editingId ? { id: this.editingId } : {}),
+            ...(formData.get('password') ? { password: formData.get('password') } : {})
+        };
+        
+        try {
+            if (this.editingId) {
+                // 编辑商户 - 使用PUT请求
+                const response = await API.request('/admin/marketer', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.code === 1) {
+                    this.showSuccess('修改成功');
+                    this.hideModal();
+                    await this.loadMerchants();
+                }
+            } else {
+                // 添加商户 - 使用POST请求
+                const response = await API.request('/admin/marketer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.code === 1) {
+                    this.showSuccess('添加成功');
+                    this.hideModal();
+                    await this.loadMerchants();
+                }
+            }
+        } catch (error) {
+            console.error('保存商户失败:', error);
+            this.showError('保存失败，请重试');
+        }
+    }
+
+    showModal(data = null) {
+        const modal = document.getElementById('merchantModal');
+        const title = document.getElementById('modalTitle');
+        const form = document.getElementById('merchantForm');
+        
+        title.textContent = data ? '编辑商户' : '添加商户';
+        
+        if (data) {
+            form.merchantName.value = data.name;
+            form.phone.value = data.phone || '';
+            form.idNumber.value = data.idNumber || '';
+            form.username.value = data.username || '';
+            form.status.value = data.status;
+            form.authority.value = data.authority;
+            form.password.value = ''; // 编辑时不显示密码
+        } else {
+            form.reset();
+            form.status.value = '1'; // 默认状态为正常
+            form.authority.value = '1'; // 默认权限为普通商户
+        }
+        
+        modal.style.display = 'block';
+    }
+
+    hideModal() {
+        const modal = document.getElementById('merchantModal');
+        modal.style.display = 'none';
+        this.editingId = null;
     }
 
     renderPagination() {
@@ -133,98 +268,6 @@ class MerchantManager {
         pagination.innerHTML = html;
     }
 
-    async editMerchant(id) {
-        try {
-            const response = await API.request(`/admin/merchant/detail/${id}`, {
-                method: 'GET'
-            });
-
-            if (response.code === 1) {
-                this.editingId = id;
-                this.showModal(response.data);
-            }
-        } catch (error) {
-            console.error('获取商户信息失败:', error);
-            this.showError('获取商户信息失败，请重试');
-        }
-    }
-
-    async toggleStatus(id, currentStatus) {
-        try {
-            const response = await API.request(`/admin/merchant/updateStatus`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    id,
-                    status: currentStatus === 1 ? 0 : 1
-                })
-            });
-
-            if (response.code === 1) {
-                this.showSuccess('状态修改成功');
-                await this.loadMerchants();
-            }
-        } catch (error) {
-            console.error('修改状态失败:', error);
-            this.showError('修改状态失败，请重试');
-        }
-    }
-
-    async saveMerchant() {
-        const form = document.getElementById('merchantForm');
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-        
-        try {
-            const url = this.editingId ? 
-                `/admin/merchant/update` : 
-                '/admin/merchant/add';
-            
-            const response = await API.request(url, {
-                method: 'POST',
-                body: JSON.stringify({
-                    ...data,
-                    ...(this.editingId ? { id: this.editingId } : {})
-                })
-            });
-
-            if (response.code === 1) {
-                this.showSuccess(this.editingId ? '修改成功' : '添加成功');
-                this.hideModal();
-                await this.loadMerchants();
-            }
-        } catch (error) {
-            console.error('保存商户失败:', error);
-            this.showError('保存失败，请重试');
-        }
-    }
-
-    showModal(data = null) {
-        const modal = document.getElementById('merchantModal');
-        const title = document.getElementById('modalTitle');
-        const form = document.getElementById('merchantForm');
-        
-        title.textContent = data ? '编辑商户' : '添加商户';
-        
-        if (data) {
-            form.merchantName.value = data.merchantName;
-            form.contactPerson.value = data.contactPerson;
-            form.contactPhone.value = data.contactPhone;
-            form.status.value = data.status;
-            form.password.value = ''; // 编辑时不显示密码
-        } else {
-            form.reset();
-            form.status.value = '1'; // 默认状态为正常
-        }
-        
-        modal.style.display = 'block';
-    }
-
-    hideModal() {
-        const modal = document.getElementById('merchantModal');
-        modal.style.display = 'none';
-        this.editingId = null;
-    }
-
     goToPage(page) {
         this.currentPage = page;
         this.loadMerchants();
@@ -237,12 +280,10 @@ class MerchantManager {
     }
 
     showSuccess(message) {
-        // TODO: 实现成功提示
         alert(message);
     }
 
     showError(message) {
-        // TODO: 实现错误提示
         alert(message);
     }
 }

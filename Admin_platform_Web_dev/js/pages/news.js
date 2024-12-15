@@ -44,19 +44,23 @@ class NewsManager {
         document.getElementById('newsForm').addEventListener('submit', (e) => {
             e.preventDefault();
         });
+
+        // 图片上传事件
+        document.getElementById('imageFile').addEventListener('change', (e) => {
+            this.handleImageUpload(e.target.files[0]);
+        });
     }
 
     async loadNews() {
         try {
-            const params = {
-                currentPage: this.currentPage,
-                pageSize: this.pageSize,
-                ...(this.searchText ? { title: this.searchText } : {})
-            };
-
-            const response = await API.request('/admin/news/conditionSearch', {
+            const response = await API.request('/admin/news/page', {
                 method: 'GET',
-                params
+                params: {
+                    page: this.currentPage,
+                    pageSize: this.pageSize,
+                    details: this.searchText,
+                    status: ''
+                }
             });
 
             if (response.code === 1) {
@@ -80,14 +84,17 @@ class NewsManager {
         tbody.innerHTML = newsList.map(news => `
             <tr>
                 <td>${news.id}</td>
-                <td class="title-column" title="${news.title}">${news.title}</td>
-                <td class="summary-column" title="${news.summary}">${news.summary}</td>
+                <td class="title-column" title="${news.detail}">
+                    <img src="${news.image}" alt="新闻图片" class="news-image" style="width:50px;height:50px;object-fit:cover;">
+                    ${news.detail}
+                </td>
+                <td class="summary-column">${news.sort}</td>
                 <td>
                     <span class="status-tag ${news.status === 1 ? 'status-published' : 'status-draft'}">
                         ${news.status === 1 ? '已发布' : '草稿'}
                     </span>
                 </td>
-                <td>${this.formatDate(news.createTime)}</td>
+                <td>${this.formatDate(new Date())}</td>
                 <td>
                     <div class="btn-group">
                         <button class="btn btn-primary btn-sm" onclick="newsManager.editNews(${news.id})">编辑</button>
@@ -137,7 +144,7 @@ class NewsManager {
 
     async editNews(id) {
         try {
-            const response = await API.request(`/admin/news/detail/${id}`, {
+            const response = await API.request(`/admin/news/list/${id}`, {
                 method: 'GET'
             });
 
@@ -146,9 +153,35 @@ class NewsManager {
                 this.showModal(response.data);
             }
         } catch (error) {
-            console.error('获取新闻信息失败:', error);
-            this.showError('获取新闻信息失败，请重试');
+            console.error('编辑新闻信息失败:', error);
+            this.showError('编辑新闻信息失败，请重试');
         }
+    }
+
+    showModal(data = null) {
+        const modal = document.getElementById('newsModal');
+        const title = document.getElementById('modalTitle');
+        const form = document.getElementById('newsForm');
+        const preview = document.getElementById('imagePreview');
+        
+        title.textContent = data ? '编辑新闻' : '发布新闻';
+        
+        if (data) {
+            form.detail.value = data.detail;
+            form.sort.value = data.sort || 0;
+            form.status.value = data.status;
+            if (data.image) {
+                form.image.value = data.image;
+                preview.style.backgroundImage = `url(${data.image})`;
+            }
+        } else {
+            form.reset();
+            form.status.value = '0'; // 默认状态为草稿
+            form.sort.value = '0'; // 默认排序为0
+            preview.style.backgroundImage = '';
+        }
+        
+        modal.style.display = 'block';
     }
 
     async toggleStatus(id, currentStatus) {
@@ -177,8 +210,9 @@ class NewsManager {
         }
 
         try {
-            const response = await API.request(`/admin/news/delete/${id}`, {
-                method: 'POST'
+            const response = await API.request(`/admin/news`, {
+                method: 'DELETE',
+                params: { id }
             });
 
             if (response.code === 1) {
@@ -197,47 +231,43 @@ class NewsManager {
         const data = Object.fromEntries(formData.entries());
         
         try {
-            const url = this.editingId ? 
-                `/admin/news/update` : 
-                '/admin/news/add';
-            
-            const response = await API.request(url, {
-                method: 'POST',
-                body: JSON.stringify({
-                    ...data,
-                    ...(this.editingId ? { id: this.editingId } : {})
-                })
-            });
+            if (this.editingId) {
+                // 编辑新闻
+                const response = await API.request(`/admin/news/${this.editingId}`, {
+                    method: 'PUT',
+                    params: {
+                        detail: data.detail,
+                        id: this.editingId
+                    }
+                });
 
-            if (response.code === 1) {
-                this.showSuccess(this.editingId ? '修改成功' : '添加成功');
-                this.hideModal();
-                await this.loadNews();
+                if (response.code === 1) {
+                    this.showSuccess('修改成功');
+                    this.hideModal();
+                    await this.loadNews();
+                }
+            } else {
+                // 添加新闻
+                const response = await API.request('/admin/news/save', {
+                    method: 'POST',
+                    params: {
+                        detail: data.detail,
+                        image: data.image,
+                        sort: parseInt(data.sort) || 0,
+                        status: parseInt(data.status)
+                    }
+                });
+
+                if (response.code === 1) {
+                    this.showSuccess('添加成功');
+                    this.hideModal();
+                    await this.loadNews();
+                }
             }
         } catch (error) {
             console.error('保存新闻失败:', error);
             this.showError('保存失败，请重试');
         }
-    }
-
-    showModal(data = null) {
-        const modal = document.getElementById('newsModal');
-        const title = document.getElementById('modalTitle');
-        const form = document.getElementById('newsForm');
-        
-        title.textContent = data ? '编辑新闻' : '发布新闻';
-        
-        if (data) {
-            form.title.value = data.title;
-            form.summary.value = data.summary;
-            form.content.value = data.content;
-            form.status.value = data.status;
-        } else {
-            form.reset();
-            form.status.value = '0'; // 默认状态为草稿
-        }
-        
-        modal.style.display = 'block';
     }
 
     hideModal() {
@@ -266,10 +296,34 @@ class NewsManager {
         // TODO: 实现错误提示
         alert(message);
     }
+
+    async handleImageUpload(file) {
+        if (!file) return;
+
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await API.request('/admin/upload/image', {
+                method: 'POST',
+                body: formData,
+                headers: {} // 让浏览器自动设置Content-Type
+            });
+
+            if (response.code === 1) {
+                document.getElementById('image').value = response.data;
+                document.getElementById('imagePreview').style.backgroundImage = `url(${response.data})`;
+            }
+        } catch (error) {
+            console.error('上传图片失败:', error);
+            this.showError('上传图片失败，请重试');
+        }
+    }
 }
 
 // 初始化新闻管理器
 let newsManager = null;
-document.addEventListener('DOMContentLoaded', () => {
-    newsManager = new NewsManager();
-}); 
+// 移除这个事件监听，因为现在由 index.js 负责初始化
+// document.addEventListener('DOMContentLoaded', () => {
+//     newsManager = new NewsManager();
+// }); 

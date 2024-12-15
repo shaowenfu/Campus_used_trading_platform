@@ -151,4 +151,56 @@
 .status-disabled {
     background: #fff1f0;
     color: #f5222d;
+}
+
+/* 权限等级样式 */
+.authority-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    background: #e6f7ff;
+    color: #1890ff;
+}
+
+/* 身份证号样式 */
+.id-number {
+    font-family: monospace;
+    letter-spacing: 1px;
+}
+
+/* 表格列宽调整 */
+.table th,
+.table td {
+    padding: 12px 8px;
+}
+
+.table th:nth-child(1), /* ID列 */
+.table td:nth-child(1) {
+    width: 60px;
+}
+
+.table th:nth-child(2), /* 商户名称列 */
+.table td:nth-child(2) {
+    width: 120px;
+}
+
+.table th:nth-child(3), /* 联系电话列 */
+.table td:nth-child(3) {
+    width: 120px;
+}
+
+.table th:nth-child(4), /* 身份证号列 */
+.table td:nth-child(4) {
+    width: 180px;
+}
+
+.table th:nth-child(5), /* 权限等级列 */
+.table td:nth-child(5) {
+    width: 100px;
+}
+
+.table th:nth-child(6), /* 状态列 */
+.table td:nth-child(6) {
+    width: 80px;
 } 

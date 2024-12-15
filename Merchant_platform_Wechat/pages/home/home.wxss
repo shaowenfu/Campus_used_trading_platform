@@ -1,6 +1,6 @@
 .home-container {
   padding: 30rpx;
-  background: #f7f7f7;
+  background: #FFF9F4;
 }
 
 .section {
@@ -8,12 +8,32 @@
   border-radius: 12rpx;
   padding: 30rpx;
   margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.section:hover {
+  transform: translateY(-2rpx);
+  box-shadow: 0 6rpx 16rpx rgba(0,0,0,0.08);
 }
 
 .section-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.title-text {
   font-size: 32rpx;
   font-weight: bold;
-  margin-bottom: 30rpx;
+  color: #403F43;
+  margin-right: 20rpx;
+}
+
+.title-line {
+  flex: 1;
+  height: 2rpx;
+  background: linear-gradient(to right, #655E82, #E6DDDB);
 }
 
 .business-data,
@@ -21,22 +41,30 @@
 .order-overview {
   display: flex;
   justify-content: space-around;
+  padding: 20rpx 0;
 }
 
 .data-item {
   text-align: center;
+  padding: 20rpx;
+  border-radius: 8rpx;
+  transition: all 0.3s ease;
+}
+
+.data-item:hover {
+  background: rgba(183, 188, 201, 0.1);
 }
 
 .data-item .num {
   font-size: 36rpx;
   font-weight: bold;
-  color: #07c160;
+  color: #655E82;
   margin-bottom: 10rpx;
 }
 
 .data-item .label {
   font-size: 28rpx;
-  color: #666;
+  color: #B7BCC9;
 }
 
 .quick-entry {
@@ -45,10 +73,18 @@
   padding: 30rpx 0;
   background: #fff;
   border-radius: 12rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
 }
 
 .entry-item {
   text-align: center;
+  padding: 20rpx;
+  border-radius: 8rpx;
+  transition: all 0.3s ease;
+}
+
+.entry-item:hover {
+  background: rgba(183, 188, 201, 0.1);
 }
 
 .entry-item image {
@@ -59,5 +95,17 @@
 
 .entry-item text {
   font-size: 28rpx;
-  color: #333;
+  color: #403F43;
+}
+
+.business-section {
+  border-left: 6rpx solid #655E82;
+}
+
+.goods-section {
+  border-left: 6rpx solid #B7BCC9;
+}
+
+.order-section {
+  border-left: 6rpx solid #E6DDDB;
 } 

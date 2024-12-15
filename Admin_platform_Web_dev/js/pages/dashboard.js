@@ -9,6 +9,8 @@ class Dashboard {
             await this.loadStatistics();
             // 加载最新订单
             await this.loadLatestOrders();
+            // 加载商品和商户统计
+            await this.loadProductAndMerchantStatistics();
         } catch (error) {
             console.error('初始化控制台失败:', error);
         }
@@ -22,13 +24,42 @@ class Dashboard {
                 method: 'GET'
             });
 
-            if (response.code === 0 && response.data) {
+            if (response.code === 1 && response.data) {
                 // 更新统计数据显示
                 document.getElementById('toBeConfirmed').textContent = response.data.toBeConfirmed || 0;
                 document.getElementById('confirmed').textContent = response.data.confirmed || 0;
             }
         } catch (error) {
             console.error('加载统计数据失败:', error);
+        }
+    }
+
+    // 加载商品和商户统计数据
+    async loadProductAndMerchantStatistics() {
+        try {
+            // 获取商品总数
+            const productResponse = await API.request('/admin/thing/list', {
+                method: 'GET'
+            });
+
+            if (productResponse.code === 1 && Array.isArray(productResponse.data)) {
+                document.getElementById('totalProducts').textContent = productResponse.data.length;
+            }
+
+            // 获取商户总数
+            const merchantResponse = await API.request('/admin/marketer/page', {
+                method: 'GET',
+                params: {
+                    page: 2,
+                    pageSize: 1
+                }
+            });
+
+            if (merchantResponse.code === 1 && merchantResponse.data) {
+                document.getElementById('totalMerchants').textContent = merchantResponse.data.total || 0;
+            }
+        } catch (error) {
+            console.error('加载商品和商户统计数据失败:', error);
         }
     }
 
@@ -43,9 +74,10 @@ class Dashboard {
                     pageSize: 5
                 }
             });
-
-            if (response.code === 0 && response.data) {
+            console.log("response.data.records:", response.data.records);
+            if (response.code === 1 && response.data) {
                 this.renderOrderList(response.data.records);
+                console.log("加载订单列表成功:", this.renderOrderList);
             }
         } catch (error) {
             console.error('加载订单列表失败:', error);
@@ -59,29 +91,35 @@ class Dashboard {
 
     // 渲染订单列表
     renderOrderList(orders) {
+        console.log("orders:", orders);
         const orderList = document.getElementById('orderList');
         if (!orders || orders.length === 0) {
+            console.log("orders.length === 0");
             orderList.innerHTML = `
                 <tr>
-                    <td colspan="5" class="text-center">暂无订单数据</td>
+                    <td colspan="5" class="text-center">��无订单数据</td>
                 </tr>
             `;
             return;
         }
-
-        orderList.innerHTML = orders.map(order => `
-            <tr>
-                <td>${order.number}</td>
-                <td>${order.orderThings}</td>
-                <td>￥${order.amount.toFixed(2)}</td>
-                <td>
-                    <span class="status-tag ${this.getStatusClass(order.status)}">
-                        ${this.getStatusText(order.status)}
-                    </span>
-                </td>
-                <td>${this.formatDate(order.orderTime)}</td>
-            </tr>
-        `).join('');
+        console.log("orders.length > 0");
+        try {
+            orderList.innerHTML = orders.map(order => `
+                <tr>
+                    <td>${order.number}</td>
+                    <td>${order.orderThings}</td>
+                    <td>￥${order.amount.toFixed(2)}</td>
+                    <td>
+                        <span class="status-tag ${this.getStatusClass(order.status)}">
+                            ${this.getStatusText(order.status)}
+                        </span>
+                    </td>
+                    <td>${this.formatDate(order.orderTime)}</td>
+                </tr>
+            `).join('');
+        } catch (error) {
+            console.error('渲染订单列表失败:', error);
+        }
     }
 
     // 获取订单状态样式类
@@ -100,7 +138,12 @@ class Dashboard {
             case 1: return '待确认';
             case 2: return '已确认';
             case 3: return '已取消';
-            default: return '未知状态';
+            case 4: return '已发货';
+            case 5: return '已收货';
+            case 6: return '已评价';
+            case 7: return '已退款';
+            case 8: return '已删除';
+            default: return '状态未知';
         }
     }
 

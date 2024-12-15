@@ -6,31 +6,24 @@ class ProductManager {
         this.searchText = '';
         this.categoryFilter = '';
         this.editingId = null;
-        this.categories = [];
+        this.categories = [
+            { id: 1, categoryName: '手机数码' },
+            { id: 2, categoryName: '家用电器' },
+            { id: 3, categoryName: '家具家居' },
+            { id: 4, categoryName: '电脑办公' },
+            { id: 5, categoryName: '图书音像' },
+            { id: 6, categoryName: '服装配饰' },
+            { id: 7, categoryName: '运动户外' },
+            { id: 8, categoryName: '其他' }
+        ];
         
         this.init();
     }
 
     async init() {
-        await this.loadCategories();
         this.bindEvents();
+        this.renderCategoryOptions();
         await this.loadProducts();
-    }
-
-    async loadCategories() {
-        try {
-            const response = await API.request('/admin/category/list', {
-                method: 'GET'
-            });
-
-            if (response.code === 1) {
-                this.categories = response.data;
-                this.renderCategoryOptions();
-            }
-        } catch (error) {
-            console.error('加载分类列表失败:', error);
-            this.showError('加载分类列表失败，请重试');
-        }
     }
 
     renderCategoryOptions() {
@@ -42,7 +35,7 @@ class ProductManager {
         ).join('');
         
         filterSelect.innerHTML = '<option value="">全部分类</option>' + options;
-        modalSelect.innerHTML = options;
+        modalSelect.innerHTML = '<option value="">请选择分类</option>' + options;
     }
 
     bindEvents() {
@@ -78,7 +71,7 @@ class ProductManager {
             this.saveProduct();
         });
 
-        // 图��上传事件
+        // 图片上传事件
         document.getElementById('imageFile').addEventListener('change', (e) => {
             this.handleImageUpload(e.target.files[0]);
         });
@@ -92,13 +85,13 @@ class ProductManager {
     async loadProducts() {
         try {
             const params = {
-                currentPage: this.currentPage,
+                page: this.currentPage,
                 pageSize: this.pageSize,
                 ...(this.searchText ? { name: this.searchText } : {}),
                 ...(this.categoryFilter ? { categoryId: this.categoryFilter } : {})
             };
 
-            const response = await API.request('/admin/product/conditionSearch', {
+            const response = await API.request('/admin/thing/page', {
                 method: 'GET',
                 params
             });
@@ -125,12 +118,12 @@ class ProductManager {
             <tr>
                 <td>${product.id}</td>
                 <td>
-                    <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
                 </td>
                 <td>${product.name}</td>
                 <td>${this.getCategoryName(product.categoryId)}</td>
                 <td class="price">￥${product.price.toFixed(2)}</td>
-                <td class="${this.getStockClass(product.stock)}">${product.stock}</td>
+                <td class="${this.getStockClass(product.amount)}">${product.amount}</td>
                 <td>
                     <span class="status-tag ${product.status === 1 ? 'status-online' : 'status-offline'}">
                         ${product.status === 1 ? '已上架' : '已下架'}
@@ -151,13 +144,13 @@ class ProductManager {
     }
 
     getCategoryName(categoryId) {
-        const category = this.categories.find(c => c.id === categoryId);
+        const category = this.categories.find(c => c.id === parseInt(categoryId));
         return category ? category.categoryName : '未知分类';
     }
 
-    getStockClass(stock) {
-        if (stock <= 0) return 'stock-danger';
-        if (stock <= 10) return 'stock-warning';
+    getStockClass(amount) {
+        if (amount <= 0) return 'stock-danger';
+        if (amount <= 10) return 'stock-warning';
         return '';
     }
 
@@ -186,7 +179,7 @@ class ProductManager {
 
     async editProduct(id) {
         try {
-            const response = await API.request(`/admin/product/detail/${id}`, {
+            const response = await API.request(`/admin/thing/${id}`, {
                 method: 'GET'
             });
 
@@ -252,16 +245,16 @@ class ProductManager {
             return;
         }
 
-        // 验证图片
-        if (!this.editingId && !data.imageUrl) {
-            this.showError('请上传商品图片');
-            return;
-        }
+        // // 验证图片
+        // if (!this.editingId && !data.imageUrl) {
+        //     this.showError('请上传商品图片');
+        //     return;
+        // }
 
         try {
             const url = this.editingId ? 
-                `/admin/product/update` : 
-                '/admin/product/add';
+                `/admin/thing/update` : 
+                '/admin/thing/add';
             
             const response = await API.request(url, {
                 method: 'POST',
@@ -292,13 +285,33 @@ class ProductManager {
         
         if (data) {
             form.name.value = data.name;
-            form.categoryId.value = data.categoryId;
-            form.imageUrl.value = data.imageUrl;
+            // 根据categoryId设置正确的分类选项
+            const categorySelect = form.categoryId;
+            const categoryOption = Array.from(categorySelect.options).find(
+                option => option.value === data.categoryId.toString()
+            );
+            
+            if (categoryOption) {
+                categorySelect.value = data.categoryId;
+            } else {
+                // 如果在现有选项中找不到对应的分类，添加一个新选项
+                const category = this.categories.find(c => c.id === parseInt(data.categoryId));
+                if (category) {
+                    const newOption = new Option(category.categoryName, category.id);
+                    categorySelect.add(newOption);
+                    categorySelect.value = category.id;
+                } else {
+                    console.warn(`未找到分类ID ${data.categoryId} 对应的分类信息`);
+                    categorySelect.value = ""; // 设置为默认选项
+                }
+            }
+
+            form.imageUrl.value = data.image || '';
             form.price.value = data.price;
-            form.stock.value = data.stock;
+            form.stock.value = data.amount;
             form.description.value = data.description;
             form.status.value = data.status;
-            preview.style.backgroundImage = `url(${data.imageUrl})`;
+            preview.style.backgroundImage = data.image ? `url(${data.image})` : '';
         } else {
             form.reset();
             form.status.value = '1'; // 默认状态为上架
@@ -365,6 +378,7 @@ class ProductManager {
 
 // 初始化商品管理器
 let productManager = null;
-document.addEventListener('DOMContentLoaded', () => {
-    productManager = new ProductManager();
-}); 
+// 移除 DOMContentLoaded 事件监听
+// document.addEventListener('DOMContentLoaded', () => {
+//     productManager = new ProductManager();
+// }); 

@@ -18,10 +18,10 @@
                     <tr>
                         <th>ID</th>
                         <th>商户名称</th>
-                        <th>联系人</th>
                         <th>联系电话</th>
+                        <th>身份证号</th>
+                        <th>权限等级</th>
                         <th>状态</th>
-                        <th>创建时间</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -53,17 +53,29 @@
                         <input type="text" id="merchantName" name="merchantName" required>
                     </div>
                     <div class="form-item">
-                        <label>联系人</label>
-                        <input type="text" id="contactPerson" name="contactPerson" required>
+                        <label>用户名</label>
+                        <input type="text" id="username" name="username" required>
                     </div>
                     <div class="form-item">
                         <label>联系电话</label>
-                        <input type="tel" id="contactPhone" name="contactPhone" required>
+                        <input type="tel" id="phone" name="phone" required>
                     </div>
                     <div class="form-item">
-                        <label>商户密码</label>
+                        <label>身份证号</label>
+                        <input type="text" id="idNumber" name="idNumber" required>
+                    </div>
+                    <div class="form-item">
+                        <label>密码</label>
                         <input type="password" id="password" name="password">
                         <small>编辑时留空表示不修改密码</small>
+                    </div>
+                    <div class="form-item">
+                        <label>权限等级</label>
+                        <select id="authority" name="authority">
+                            <option value="1">普通商户</option>
+                            <option value="2">高级商户</option>
+                            <option value="3">特级商户</option>
+                        </select>
                     </div>
                     <div class="form-item">
                         <label>状态</label>

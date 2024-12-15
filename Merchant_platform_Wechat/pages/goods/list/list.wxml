@@ -12,49 +12,59 @@
         bindconfirm="onSearch"
       />
       <view class="search-actions">
-        <icon 
-          wx:if="{{searchValue}}" 
-          class="clear-icon" 
-          type="clear" 
-          size="16" 
-          bindtap="clearSearch"
-        ></icon>
-        <icon 
-          class="search-icon" 
-          type="search" 
-          size="16" 
-          bindtap="onSearch"
-          hover-class="icon-hover"
-        ></icon>
+        <view class="icon-wrap">
+          <icon 
+            wx:if="{{searchValue}}" 
+            class="clear-icon" 
+            type="clear" 
+            size="16" 
+            bindtap="clearSearch"
+          ></icon>
+        </view>
+        <view class="icon-wrap">
+          <icon 
+            class="search-icon" 
+            type="search" 
+            size="16" 
+            bindtap="onSearch"
+            hover-class="icon-hover"
+          ></icon>
+        </view>
       </view>
     </view>
   </view>
 
   <!-- 筛选栏 -->
   <view class="filter-bar">
-    <picker 
-      mode="selector" 
-      range="{{categories}}" 
-      range-key="name"
-      bindchange="onCategoryChange"
-    >
-      <view class="filter-item">
-        <text>{{queryParams.categoryId ? categoryMap[queryParams.categoryId] : '选择分类'}}</text>
-        <text class="arrow">></text>
-      </view>
-    </picker>
+    <view class="filter-title">
+      <text class="title-text">筛选</text>
+      <view class="title-line"></view>
+    </view>
+    <view class="filter-content">
+      <picker 
+        mode="selector" 
+        range="{{categories}}" 
+        range-key="name"
+        bindchange="onCategoryChange"
+      >
+        <view class="filter-item">
+          <text>{{queryParams.categoryId ? categoryMap[queryParams.categoryId] : '选择分类'}}</text>
+          <text class="arrow">></text>
+        </view>
+      </picker>
 
-    <picker 
-      mode="selector" 
-      range="{{statusOptions}}" 
-      range-key="text"
-      bindchange="onStatusChange"
-    >
-      <view class="filter-item">
-        <text>{{queryParams.status !== '' ? statusMap[queryParams.status] : '选择状态'}}</text>
-        <text class="arrow">></text>
-      </view>
-    </picker>
+      <picker 
+        mode="selector" 
+        range="{{statusOptions}}" 
+        range-key="text"
+        bindchange="onStatusChange"
+      >
+        <view class="filter-item">
+          <text>{{queryParams.status !== '' ? statusMap[queryParams.status] : '选择状态'}}</text>
+          <text class="arrow">></text>
+        </view>
+      </picker>
+    </view>
   </view>
 
   <!-- 商品列表 -->
@@ -64,13 +74,13 @@
       wx:for="{{goodsList}}"
       wx:key="id"
     >
+      <view class="goods-tag" wx:if="{{item.status === 1}}">在售</view>
       <image class="goods-img" src="{{item.image}}" mode="aspectFill"/>
       <view class="goods-info">
         <view class="goods-name">{{item.name}}</view>
         <view class="goods-category">{{categoryMap[item.categoryId]}}</view>
         <view class="goods-price">¥{{item.price}}</view>
         <view class="goods-stock">库存: {{item.amount}}</view>
-        <view class="goods-status">状态: {{statusMap[item.status]}}</view>
       </view>
       <view class="goods-actions">
         <button 

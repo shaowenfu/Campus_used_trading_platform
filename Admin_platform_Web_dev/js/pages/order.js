@@ -39,7 +39,7 @@ class OrderManager {
     async loadOrders() {
         try {
             const params = {
-                currentPage: this.currentPage,
+                Page: this.currentPage,
                 pageSize: this.pageSize,
                 ...(this.searchText ? { orderNo: this.searchText } : {}),
                 ...(this.statusFilter ? { status: this.statusFilter } : {})
@@ -49,8 +49,9 @@ class OrderManager {
                 method: 'GET',
                 params
             });
-
+            console.log('response', response);
             if (response.code === 1) {
+                console.log('response.data', response.data);
                 this.total = response.data.total;
                 this.renderOrders(response.data.records);
                 this.renderPagination();
@@ -64,24 +65,27 @@ class OrderManager {
     renderOrders(orders) {
         const tbody = document.getElementById('orderList');
         if (!orders || orders.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center">暂无数据</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="9" class="text-center">暂无数据</td></tr>';
             return;
         }
 
         tbody.innerHTML = orders.map(order => `
             <tr>
-                <td>${order.orderNo}</td>
-                <td>${order.merchantName}</td>
+                <td>${order.number}</td>
+                <td>${order.userName || '-'}</td>
+                <td>${order.consignee || '-'}</td>
+                <td>${order.phone || '-'}</td>
+                <td>${order.address || '-'}</td>
                 <td class="amount">￥${order.amount.toFixed(2)}</td>
                 <td>
                     <span class="status-tag ${this.getStatusClass(order.status)}">
                         ${this.getStatusText(order.status)}
                     </span>
                 </td>
-                <td>${this.formatDate(order.createTime)}</td>
+                <td>${this.formatDate(order.orderTime)}</td>
                 <td>
                     <div class="btn-group">
-                        <button class="btn btn-primary btn-sm" onclick="orderManager.viewOrder('${order.orderNo}')">查看</button>
+                        <button class="btn btn-primary btn-sm" onclick="orderManager.viewOrder(${order.id})">查看</button>
                         ${this.renderActionButton(order)}
                     </div>
                 </td>
@@ -93,20 +97,24 @@ class OrderManager {
         switch (order.status) {
             case 1: // 待确认
                 return `
-                    <button class="btn btn-success btn-sm" onclick="orderManager.confirmOrder('${order.orderNo}')">确认</button>
-                    <button class="btn btn-danger btn-sm" onclick="orderManager.cancelOrder('${order.orderNo}')">取消</button>
+                    <button class="btn btn-success btn-sm" onclick="orderManager.confirmOrder('${order.id}')">确认</button>
+                    <button class="btn btn-danger btn-sm" onclick="orderManager.cancelOrder('${order.id}')">取消</button>
                 `;
             case 2: // 已确认
-                return `<button class="btn btn-success btn-sm" onclick="orderManager.completeOrder('${order.orderNo}')">完成</button>`;
+                return `<button class="btn btn-success btn-sm" onclick="orderManager.completeOrder('${order.id}')">完成</button>`;
             default:
                 return '';
         }
     }
 
-    async viewOrder(orderNo) {
+    async viewOrder(orderId) {
         try {
-            const response = await API.request(`/admin/order/detail/${orderNo}`, {
-                method: 'GET'
+            console.log('orderId', orderId);
+            const response = await API.request(`/admin/order/details/${orderId}`, {
+                method: 'GET',
+                params: {
+                    id: orderId
+                }
             });
 
             if (response.code === 1) {
@@ -121,22 +129,35 @@ class OrderManager {
 
     showOrderDetail(order) {
         // 填充基本信息
-        document.getElementById('orderNo').textContent = order.orderNo;
-        document.getElementById('merchantName').textContent = order.merchantName;
+        document.getElementById('orderNo').textContent = order.number;
+        document.getElementById('userName').textContent = order.userName;
+        document.getElementById('consignee').textContent = order.consignee;
+        document.getElementById('phone').textContent = order.phone;
+        document.getElementById('address').textContent = order.address;
         document.getElementById('amount').textContent = `￥${order.amount.toFixed(2)}`;
+        document.getElementById('payMethod').textContent = this.getPayMethodText(order.payMethod);
+        document.getElementById('payStatus').textContent = this.getPayStatusText(order.payStatus);
         document.getElementById('status').textContent = this.getStatusText(order.status);
-        document.getElementById('createTime').textContent = this.formatDate(order.createTime);
+        document.getElementById('orderTime').textContent = this.formatDate(order.orderTime);
+        document.getElementById('remark').textContent = order.remark || '无';
 
         // 填充商品列表
         const productList = document.getElementById('productList');
-        productList.innerHTML = order.products.map(product => `
-            <tr>
-                <td>${product.productName}</td>
-                <td>￥${product.price.toFixed(2)}</td>
-                <td>${product.quantity}</td>
-                <td>￥${(product.price * product.quantity).toFixed(2)}</td>
-            </tr>
-        `).join('');
+        if (order.orderDetailList && order.orderDetailList.length > 0) {
+            productList.innerHTML = order.orderDetailList.map(product => `
+                <tr>
+                    <td>
+                        <img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover;">
+                    </td>
+                    <td>${product.name}</td>
+                    <td>￥${product.price.toFixed(2)}</td>
+                    <td>${product.amount}</td>
+                    <td>￥${(product.price * product.amount).toFixed(2)}</td>
+                </tr>
+            `).join('');
+        } else {
+            productList.innerHTML = '<tr><td colspan="5" class="text-center">暂无商品信息</td></tr>';
+        }
 
         // 渲染底部按钮
         const modalFooter = document.getElementById('modalFooter');
@@ -149,27 +170,27 @@ class OrderManager {
         document.getElementById('orderModal').style.display = 'block';
     }
 
-    async confirmOrder(orderNo) {
+    async confirmOrder(orderId) {
         if (!confirm('确定要确认这个订单吗？')) return;
-        await this.updateOrderStatus(orderNo, 2);
+        await this.updateOrderStatus(orderId, 2);
     }
 
-    async completeOrder(orderNo) {
+    async completeOrder(orderId) {
         if (!confirm('确定要完成这个订单吗？')) return;
-        await this.updateOrderStatus(orderNo, 3);
+        await this.updateOrderStatus(orderId, 3);
     }
 
-    async cancelOrder(orderNo) {
+    async cancelOrder(orderId) {
         if (!confirm('确定要取消这个订单吗？')) return;
-        await this.updateOrderStatus(orderNo, 4);
+        await this.updateOrderStatus(orderId, 4);
     }
 
-    async updateOrderStatus(orderNo, status) {
+    async updateOrderStatus(orderId, status) {
         try {
             const response = await API.request('/admin/order/updateStatus', {
                 method: 'POST',
                 body: JSON.stringify({
-                    orderNo,
+                    id: orderId,
                     status
                 })
             });
@@ -180,7 +201,7 @@ class OrderManager {
                 await this.loadOrders();
             }
         } catch (error) {
-            console.error('更新订���状态失败:', error);
+            console.error('更新订单状态失败:', error);
             this.showError('更新订单状态失败，请重试');
         }
     }
@@ -263,10 +284,29 @@ class OrderManager {
         // TODO: 实现错误提示
         alert(message);
     }
+
+    // 添加支付方式转换函数
+    getPayMethodText(payMethod) {
+        const payMethodMap = {
+            1: '在线支付',
+            2: '货到付款'
+        };
+        return payMethodMap[payMethod] || '未知方式';
+    }
+
+    // 添加支付状态转换函数
+    getPayStatusText(payStatus) {
+        const payStatusMap = {
+            0: '未支付',
+            1: '已支付'
+        };
+        return payStatusMap[payStatus] || '未知状态';
+    }
 }
 
 // 初始化订单管理器
 let orderManager = null;
-document.addEventListener('DOMContentLoaded', () => {
-    orderManager = new OrderManager();
-}); 
+// 移除 DOMContentLoaded 事件监听
+// document.addEventListener('DOMContentLoaded', () => {
+//     orderManager = new OrderManager();
+// }); 

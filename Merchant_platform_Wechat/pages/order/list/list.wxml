@@ -2,6 +2,10 @@
 <view class="container">
   <!-- 订单统计 -->
   <view class="statistics">
+    <view class="stat-title">
+      <text class="title-text">订单概览</text>
+      <view class="title-line"></view>
+    </view>
     <view class="stat-item">
       <text class="num">{{orderStatistics.toBeConfirmed}}</text>
       <text class="label">待接单</text>
@@ -22,7 +26,9 @@
         model:value="{{searchValue}}"
         bindconfirm="onSearch"
       />
-      <icon class="search-icon" type="search" size="16" bindtap="onSearch"></icon>
+      <view class="search-icon-wrap">
+        <icon class="search-icon" type="search" size="16" bindtap="onSearch"></icon>
+      </view>
     </view>
   </view>
 
@@ -36,6 +42,7 @@
       data-value="{{item.value}}"
     >
       {{item.text}}
+      <view wx:if="{{queryParams.status === item.value}}" class="active-line"></view>
     </view>
   </view>
 
@@ -48,6 +55,7 @@
       catchtap="goToDetail"
       data-id="{{item.id}}"
     >
+      <view class="order-tag" wx:if="{{item.status === 2}}">待处理</view>
       <view class="order-header">
         <text class="order-no">订单号：{{item.number}}</text>
         <text class="order-status">{{item.statusText}}</text>

@@ -1,76 +1,73 @@
 <div class="news-container">
-    <!-- 操作栏 -->
-    <div class="operation-bar">
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="输入新闻标题搜索" class="search-input">
-            <button class="btn btn-primary" id="searchBtn">搜索</button>
-        </div>
-        <div class="action-box">
-            <button class="btn btn-success" id="addNewsBtn">发布新闻</button>
+    <div class="page-header">
+        <h2>新闻管理</h2>
+        <div class="header-actions">
+            <button id="addNewsBtn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> 发布新闻
+            </button>
         </div>
     </div>
 
-    <!-- 新闻列表 -->
-    <div class="news-list card">
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>标题</th>
-                        <th>摘要</th>
-                        <th>状态</th>
-                        <th>发布时间</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody id="newsList">
-                    <tr>
-                        <td colspan="6" class="text-center">加载中...</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="search-bar">
+        <div class="search-input">
+            <input type="text" id="searchInput" placeholder="搜索新闻...">
+            <button id="searchBtn" class="btn btn-primary">搜索</button>
         </div>
     </div>
 
-    <!-- 分页器 -->
-    <div class="pagination-container">
-        <div class="pagination" id="pagination"></div>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>内容</th>
+                    <th>排序</th>
+                    <th>状态</th>
+                    <th>发布时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="newsList"></tbody>
+        </table>
     </div>
 
-    <!-- 添加/编辑新闻弹窗 -->
-    <div class="modal" id="newsModal">
-        <div class="modal-content modal-lg">
+    <div class="pagination" id="pagination"></div>
+
+    <!-- 使用模态框样式 -->
+    <div id="newsModal" class="modal">
+        <div class="modal-content">
             <div class="modal-header">
                 <h3 id="modalTitle">发布新闻</h3>
-                <span class="close" id="closeModal">&times;</span>
+                <span id="closeModal" class="close">&times;</span>
             </div>
             <div class="modal-body">
                 <form id="newsForm">
-                    <div class="form-item">
-                        <label>新闻标题</label>
-                        <input type="text" id="title" name="title" required>
+                    <div class="form-group">
+                        <label for="detail">新闻内容</label>
+                        <textarea id="detail" name="detail" class="form-control" required></textarea>
                     </div>
-                    <div class="form-item">
-                        <label>新闻摘要</label>
-                        <textarea id="summary" name="summary" rows="2" required></textarea>
+                    <div class="form-group">
+                        <label for="sort">排序</label>
+                        <input type="number" id="sort" name="sort" class="form-control" value="0">
                     </div>
-                    <div class="form-item">
-                        <label>新闻内容</label>
-                        <textarea id="content" name="content" rows="10" required></textarea>
-                    </div>
-                    <div class="form-item">
-                        <label>状态</label>
-                        <select id="status" name="status">
-                            <option value="1">发布</option>
+                    <div class="form-group">
+                        <label for="status">状态</label>
+                        <select id="status" name="status" class="form-control">
                             <option value="0">草稿</option>
+                            <option value="1">发布</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="imageFile">上传图片</label>
+                        <input type="file" id="imageFile" accept="image/*" class="form-control">
+                        <input type="hidden" id="image" name="image">
+                        <div id="imagePreview" class="image-preview"></div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default" id="cancelBtn">取消</button>
-                <button class="btn btn-primary" id="saveBtn">保存</button>
+                <button id="cancelBtn" class="btn btn-default">取消</button>
+                <button id="saveBtn" class="btn btn-primary">保存</button>
             </div>
         </div>
     </div>

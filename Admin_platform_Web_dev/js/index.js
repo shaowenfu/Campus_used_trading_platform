@@ -119,19 +119,19 @@ async function loadPage(pageName) {
                 if (!merchantScriptExists) {
                     const script = document.createElement('script');
                     script.src = '/js/pages/merchant.js';
+                    script.onload = () => {
+                        // 确保在脚本加载完成后初始化
+                        merchantManager = new MerchantManager();
+                    };
                     document.body.appendChild(script);
                 } else {
-                    // 如果脚本已存在，直接初始化MerchantManager
-                    try {
-                        new MerchantManager();
-                    } catch (error) {
-                        console.error('初始化MerchantManager失败:', error);
-                    }
+                    // 如果脚本已存在，直接初始化新的MerchantManager实例
+                    merchantManager = new MerchantManager();
                 }
                 break;
                 
             case 'category':
-                // ���载分类管理页面
+                // 加载分类管理页面
                 const categoryResponse = await fetch('/pages/category.html');
                 const categoryHtml = await categoryResponse.text();
                 
@@ -158,14 +158,14 @@ async function loadPage(pageName) {
                 if (!categoryScriptExists) {
                     const script = document.createElement('script');
                     script.src = '/js/pages/category.js';
+                    script.onload = () => {
+                        // 确保在脚本加载完成后初始化
+                        categoryManager = new CategoryManager();
+                    };
                     document.body.appendChild(script);
                 } else {
-                    // 如果脚本已存在，直接初始化CategoryManager
-                    try {
-                        new CategoryManager();
-                    } catch (error) {
-                        console.error('初始化CategoryManager失败:', error);
-                    }
+                    // 如果脚本已存在，直接初始化新的CategoryManager实例
+                    categoryManager = new CategoryManager();
                 }
                 break;
                 
@@ -197,14 +197,14 @@ async function loadPage(pageName) {
                 if (!newsScriptExists) {
                     const script = document.createElement('script');
                     script.src = '/js/pages/news.js';
+                    script.onload = () => {
+                        // 确保在脚本加载完成后初始化
+                        newsManager = new NewsManager();
+                    };
                     document.body.appendChild(script);
                 } else {
-                    // 如果脚本已存在，直接初始化NewsManager
-                    try {
-                        new NewsManager();
-                    } catch (error) {
-                        console.error('初始化NewsManager失败:', error);
-                    }
+                    // 如果脚本已存在，直接初始化新的NewsManager实例
+                    newsManager = new NewsManager();
                 }
                 break;
                 
@@ -236,19 +236,19 @@ async function loadPage(pageName) {
                 if (!orderScriptExists) {
                     const script = document.createElement('script');
                     script.src = '/js/pages/order.js';
+                    script.onload = () => {
+                        // 确保在脚本加载完成后初始化
+                        orderManager = new OrderManager();
+                    };
                     document.body.appendChild(script);
                 } else {
-                    // 如果脚本已存在，直接初始化OrderManager
-                    try {
-                        new OrderManager();
-                    } catch (error) {
-                        console.error('初始化OrderManager失败:', error);
-                    }
+                    // 如果脚本已存在，直接初始化新的OrderManager实例
+                    orderManager = new OrderManager();
                 }
                 break;
                 
             case 'comment':
-                // ���载评论管理页面
+                // 加载评论管理页面
                 const commentResponse = await fetch('/pages/comment.html');
                 const commentHtml = await commentResponse.text();
                 
@@ -314,14 +314,14 @@ async function loadPage(pageName) {
                 if (!productScriptExists) {
                     const script = document.createElement('script');
                     script.src = '/js/pages/product.js';
+                    script.onload = () => {
+                        // 确保在脚本加载完成后初始化
+                        productManager = new ProductManager();
+                    };
                     document.body.appendChild(script);
                 } else {
-                    // 如果脚本已存在，直接初始化ProductManager
-                    try {
-                        new ProductManager();
-                    } catch (error) {
-                        console.error('初始化ProductManager失败:', error);
-                    }
+                    // 如果脚本已存在，直接初始化新的ProductManager实例
+                    productManager = new ProductManager();
                 }
                 break;
                 

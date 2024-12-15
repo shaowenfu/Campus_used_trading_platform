@@ -9,14 +9,14 @@ const API = {
             const { params, ...otherOptions } = options;
             const finalUrl = this.buildUrl(url, params);
             
-            // 获取token并检查
+            // 获取token并检查，但登录接口不需要token
             const token = localStorage.getItem('token');
             console.log("当前token：", token);
 
             // 构建请求头
             const headers = {
                 'Content-Type': 'application/json',
-                ...(token ? { 'token': token } : {}),
+                ...(url !== '/admin/login' && token ? { 'Authorization': token } : {}),
                 ...(otherOptions.headers || {})
             };
             
@@ -29,13 +29,10 @@ const API = {
                 headers
             });
             
-            console.log("请求响应：", response);
-            
             // 如果是401错误，可能是token无效
-            if (response.status === 401) {
+            if (response.status === 401 && url !== '/admin/login') {
                 console.error('认证失败，请重新登录');
-                // 可以选择是否跳转到登录页
-                // window.location.href = '/login.html';
+                window.location.href = '/login.html';
                 throw new Error('认证失败，请重新登录');
             }
             
@@ -58,6 +55,9 @@ const API = {
         try {
             const result = await this.request('/admin/login', {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
                     username,
                     password
@@ -66,7 +66,6 @@ const API = {
             
             // 如果登录成功，保存token
             if (result.code === 1 && result.data?.token) {
-                // 保存token前先清除旧的
                 localStorage.removeItem('token');
                 localStorage.setItem('token', result.data.token);
                 console.log("Token已保存：", result.data.token);
