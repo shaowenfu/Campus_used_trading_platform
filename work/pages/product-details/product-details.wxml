@@ -1,0 +1,21 @@
+<view class="product-details-container">
+  <image src="{{product.imageUrl}}" class="product-image" />
+  <view class="product-info">
+    <text class="product-name">{{product.productName}}</text>
+    <text class="product-price">¥{{product.price}}</text>
+    <text class="product-description">{{product.description}}</text>
+  </view>
+
+
+
+  <!-- 评价信息 -->
+  <view class="section">
+    <view class="section-header">
+      <text>更多评价</text>
+    </view>
+    <view class="reviews-item" bindtap="onNavigate" data-page="reviews">
+      <text>查看评价</text>
+    </view>
+  </view>
+
+</view>

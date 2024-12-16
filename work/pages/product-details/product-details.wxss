@@ -1,0 +1,62 @@
+/* 商品详情样式 */
+.product-details-container {
+  padding: 20rpx;
+}
+
+.product-image {
+  width: 100%;
+  height: 300rpx;
+  object-fit: cover;
+  border-radius: 10rpx;
+}
+
+.product-info {
+  margin-top: 20rpx;
+}
+
+.product-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.product-price {
+  font-size: 24rpx;
+  color: #f56c6c;
+  margin-top: 10rpx;
+}
+
+.product-description {
+  font-size: 16rpx;
+  color: #777;
+  margin-top: 20rpx;
+}
+
+.more-reviews-btn {
+  margin-top: 8px;
+  background-color: #007aff;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.reviews-item{
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  margin-top: 20px;
+}
+
+.section-header {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}

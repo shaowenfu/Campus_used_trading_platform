@@ -1,0 +1,212 @@
+/* 主容器布局 */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* 主内容区域 */
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  margin-bottom: 100rpx; /* 预留购物车栏高度 */
+}
+
+/* 左侧分类栏样式 */
+.sidebar {
+  width: 200rpx;
+  background-color: #f8f8f8;
+  border-right: 1px solid #ddd;
+  padding: 10rpx;
+  overflow-y: auto;
+}
+
+.category-item {
+  padding: 30rpx;
+  font-size: 32rpx;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.category-item.active {
+  background-color: #ff6600;
+  color: white;
+}
+
+/* 商品网格显示区 */
+.products-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300rpx, 1fr));
+  gap: 20rpx;
+  padding: 20rpx;
+  overflow-y: auto;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  align-items: center;
+}
+
+.product-image {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 8rpx;
+  margin-bottom: 10rpx;
+}
+
+.product-info {
+  width: 100%;
+  text-align: center;
+}
+
+.product-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.product-price {
+  font-size: 28rpx;
+  color: #ff6600;
+  margin-bottom: 8rpx;
+}
+
+/* 产品库存样式 */
+.product-amount {
+  font-size: 28rpx;
+  color: #333;
+  margin-top: 8rpx;
+}
+
+/* 产品描述样式 */
+.product-description {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 8rpx;
+  line-height: 36rpx;
+  text-align: center;
+}
+
+
+.product-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quantity {
+  width: 50rpx;
+  text-align: center;
+  font-size: 28rpx;
+  margin: 0 10rpx;
+}
+
+.btn-decrease,
+.btn-increase {
+  width: 50rpx;
+  height: 50rpx;
+  background-color: #ddd;
+  font-size: 28rpx;
+  text-align: center;
+  line-height: 50rpx;
+  border-radius: 5rpx;
+}
+
+.add-to-cart {
+  background-color: #ff6600;
+  color: white;
+  padding: 10rpx 20rpx;
+  font-size: 28rpx;
+  margin-left: 20rpx;
+  border-radius: 5rpx;
+}
+
+/* 底部购物车栏 */
+.cart-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100rpx;
+  background-color: #ff6600;
+  color: white;
+  font-size: 32rpx;
+  text-align: center;
+  line-height: 100rpx;
+  z-index: 10;
+}
+
+/* 购物车弹出窗口样式 */
+.cart-popup {
+  position: fixed;
+  bottom: 100rpx;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background-color: white;
+  border-top: 2rpx solid #ddd;
+  z-index: 20;
+  padding: 20rpx;
+  box-shadow: 0 -5rpx 10rpx rgba(0, 0, 0, 0.2);
+}
+
+/* 购物车头部样式 */
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.cart-title {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.close-btn {
+  font-size: 40rpx;
+  color: #ff6600;
+  background: none;
+  border: none;
+}
+
+/* 购物车内容样式 */
+.cart-items {
+  max-height: 400rpx;
+  overflow-y: auto;
+}
+
+.cart-item {
+  padding: 10rpx 0;
+  font-size: 28rpx;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-item-name {
+  font-weight: bold;
+}
+
+.cart-item-info {
+  color: #666;
+  margin-top: 4rpx;
+}
+
+/* 清空购物车按钮 */
+.clear-cart-btn {
+  width: 100%;
+  padding: 20rpx 0;
+  background-color: #ff6600;
+  color: white;
+  font-size: 32rpx;
+  text-align: center;
+  border: none;
+  margin-top: 20rpx;
+  border-radius: 8rpx;
+}

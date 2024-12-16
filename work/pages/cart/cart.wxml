@@ -1,0 +1,36 @@
+<view class="cart-container">
+  <!-- 购物车标题 -->
+  <view class="cart-header">
+    <text>购物车</text>
+  </view>
+
+
+  <!-- 购物车商品列表 -->
+  <view class="cart-item-list">
+    <block wx:for="{{cartItems}}" wx:key="index">
+      <view class="cart-item">
+        <image class="cart-item-image" src="{{item.imageUrl}}" mode="aspectFill" />
+        <view class="cart-item-details">
+          <text class="cart-item-name">{{item.name}}</text>
+          <view class="cart-item-quantity">
+            <text>数量: {{item.quantity}}</text>
+            <text>价格: ¥{{item.price}}</text>
+          </view>
+        </view>
+        <view class="cart-item-actions">
+          <button bindtap="removeItem" data-index="{{index}}">删除</button>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 购物车总计 -->
+  <view class="cart-total">
+    <text>总计: ¥{{totalPrice}}</text>
+  </view>
+
+  <!-- 结算按钮 -->
+  <view class="checkout-button">
+    <button bindtap="goToCheckout">去结算</button>
+  </view>
+</view>

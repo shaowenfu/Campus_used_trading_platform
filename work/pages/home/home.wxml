@@ -1,0 +1,74 @@
+<view class="home-container">
+
+
+
+
+  <!-- 顶部导航栏
+  <view class="top-bar">
+    <text class="title">首页</text>
+    <view class="icons">
+      <image src="/images/more.jpg" class="icon" />
+      <image src="/images/scan.jpg" class="icon" />
+    </view>
+  </view>
+
+
+  搜索栏
+  <view class="search-bar">
+    <input class="search-input" placeholder="请输入搜索内容" bindinput="onSearchInput" />
+    <image class="search-icon" src="/images/search_icon.png" bindtap="onSearch" />
+    <button class="search-button" bindtap="onSearch">搜索</button>
+  </view>
+
+  搜索结果展示 
+  <view class="search-results">
+    <block wx:for="{{searchResults}}" wx:key="id">
+      <view class="product-item">
+        <text>{{item.name}}</text>
+      </view>
+    </block>
+  </view>
+
+  轮播图部分 
+  <swiper class="carousel" indicator-dots="true" autoplay="true" interval="3000" duration="500">
+    <swiper-item>
+      <image src="/images/banner1.jpg" class="banner-image" />
+    </swiper-item>
+    <swiper-item>
+      <image src="/images/banner2.jpg" class="banner-image" />
+    </swiper-item>
+  </swiper>
+
+   导航按钮 
+  <view class="nav-section">
+    <view class="nav-button" bindtap="onNavigate" data-page="product-info">
+      <image src="/images/product.jpg" class="nav-icon" />
+      <text>商品信息</text>
+    </view>
+    <view class="nav-button" bindtap="onNavigate" data-page="sell-info">
+      <image src="/images/sell.jpg" class="nav-icon" />
+      <text>出售信息</text>
+    </view>
+  </view>
+
+   商品推荐区域 
+  <view class="recommend-section">
+    <view class="recommend-header">
+      <image src="/images/recommend-icon.jpg" class="recommend-icon" />
+      <text>商品信息推荐</text>
+    </view>
+    <view class="product-list">
+      <view class="product-item">
+        <image src="/images/product1.jpg" class="product-image" />
+        <text class="product-name">商品名称5</text>
+      </view>
+      <view class="product-item">
+        <image src="/images/product2.jpg" class="product-image" />
+        <text class="product-name">商品名称6</text>
+      </view>
+    </view>
+  </view> -->
+
+  <!-- 底部导航栏 -->
+</view>
+<tabbar />

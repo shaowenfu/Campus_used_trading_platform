@@ -1,0 +1,114 @@
+/* 地址容器 */
+.address-container {
+  padding: 10px;
+  background-color: #f8f8f8;
+}
+
+/* 地址项样式 */
+.address-item {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.address-item:active {
+  transform: scale(0.98);
+}
+
+/* 默认地址高亮 */
+.default-address {
+  border: 2px solid #ff9900;
+}
+
+/* 默认地址标签 */
+.default-tag {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background: linear-gradient(to right, #ff9900, #ffa64d);
+  color: #fff;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 0 8px 8px 0;
+  font-weight: bold;
+}
+
+/* 地址信息 */
+.address-info {
+  margin-bottom: 10px;
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.phone {
+  font-size: 14px;
+  color: #666;
+}
+
+.info-body .address {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* 操作按钮 */
+.address-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.edit-btn,
+.delete-btn {
+  font-size: 14px;
+  padding: 5px 12px;
+  margin-left: 10px;
+  border-radius: 5px;
+  color: #fff;
+  border: none;
+}
+
+.edit-btn {
+  background-color: #4caf50; /* 绿色按钮 */
+}
+
+.delete-btn {
+  background-color: #f44336; /* 红色按钮 */
+}
+
+.edit-btn:active,
+.delete-btn:active {
+  opacity: 0.8;
+}
+
+/* 添加新地址按钮 */
+.add-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background-color: #ff9900;
+  color: #fff;
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-btn:active {
+  opacity: 0.8;
+}

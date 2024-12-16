@@ -85,7 +85,6 @@ class NewsManager {
             <tr>
                 <td>${news.id}</td>
                 <td class="title-column" title="${news.detail}">
-                    <img src="${news.image}" alt="新闻图片" class="news-image" style="width:50px;height:50px;object-fit:cover;">
                     ${news.detail}
                 </td>
                 <td class="summary-column">${news.sort}</td>

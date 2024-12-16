@@ -1,0 +1,61 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/home/home",
+    "pages/message/message",
+    "pages/forum/forum",
+    "pages/profile/profile",
+    "pages/cart/cart",
+    "pages/address/address",
+    "pages/address-edit/address-edit",
+    "pages/order/order",
+    "pages/order-details/order-details",
+    "pages/favorite/favorite",
+    "pages/product-details/product-details",
+    "pages/product-info/product-info",
+    "pages/token/token",
+    "pages/reviews/reviews",
+    "pages/message-detail/message-detail",
+    "pages/remark/remark"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "Weixin",
+    "navigationBarBackgroundColor": "#ffffff"
+  },
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "tabBar": {
+    "color": "#000000",
+    "selectedColor": "#3cc51f",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "images/home.jpg",
+        "selectedIconPath": "images/home.jpg"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "text": "公告信息",
+        "iconPath": "images/messages.png",
+        "selectedIconPath": "images/messages.png"
+      },
+      {
+        "pagePath": "pages/forum/forum",
+        "text": "论坛交流"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "个人中心",
+        "iconPath": "images/profile.png",
+        "selectedIconPath": "images/profile.png"
+      }
+    ]
+  }
+}

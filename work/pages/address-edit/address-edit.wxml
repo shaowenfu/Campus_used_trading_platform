@@ -1,0 +1,57 @@
+<view class="container">
+  <form bindsubmit="submitForm">
+    <!-- 收货人 -->
+    <view class="form-group">
+      <label>收货人</label>
+      <input type="text" name="consignee" value="{{address.consignee}}" placeholder="请输入收货人姓名" />
+    </view>
+
+    <!-- 性别选择 -->
+    <view class="form-group">
+      <label>性别</label>
+      <picker mode="selector" range="{{genderOptions}}" bindchange="onSexChange">
+        <view class="picker">{{address.sex ? address.sex : '请选择性别'}}</view>
+      </picker>
+    </view>
+
+    <!-- 手机号 -->
+    <view class="form-group">
+      <label>手机号</label>
+      <input type="number" name="phone" value="{{address.phone}}" placeholder="请输入手机号" />
+    </view>
+
+    <!-- 园区 -->
+    <view class="form-group">
+      <label>园区</label>
+      <input type="text" name="area" value="{{address.area}}" placeholder="请输入园区" />
+    </view>
+
+    <!-- 宿舍号 -->
+    <view class="form-group">
+      <label>宿舍</label>
+      <input type="text" name="dormitoriesId" value="{{address.dormitoriesId}}" placeholder="请输入宿舍号" />
+    </view>
+
+    <!-- 单元号 -->
+    <view class="form-group">
+      <label>单元号</label>
+      <input type="text" name="unitNumber" value="{{address.unitNumber}}" placeholder="请输入单元号" />
+    </view>
+
+    <!-- 门牌号 -->
+    <view class="form-group">
+      <label>门牌号</label>
+      <input type="text" name="doorCode" value="{{address.doorCode}}" placeholder="请输入门牌号" />
+    </view>
+
+    <!-- 默认地址 -->
+    <view class="form-group">
+      <label>设为默认地址</label>
+      <switch name="isDefault" checked="{{address.isDefault === 1}}" bindchange="onDefaultChange" />
+    </view>
+
+    <button form-type="submit" class="submit-btn">
+      {{isEdit ? '保存修改' : '添加地址'}}
+    </button>
+  </form>
+</view>

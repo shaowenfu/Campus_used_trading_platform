@@ -1,0 +1,28 @@
+<view class="remark-container">
+  <!-- 头部 -->
+  <view class="header">
+    <text class="title">我的评论</text>
+    <!-- <button class="add-btn" bindtap="onAddRemark">添加评论</button> -->
+  </view>
+
+  <!-- 评论列表 -->
+  <block wx:for="{{remarks}}" wx:key="id">
+    <view class="remark-item">
+      <!-- 评论内容和时间 -->
+      <view class="content">
+        <text class='text'>
+          商家:{{item.marketerUsername}}
+        </text>
+        <text class="text">
+          {{item.detail.length > 30 ? item.detail.slice(0, 30) + '...' : item.detail}}
+        </text>
+        <text class="date">更新时间: {{item.formattedDate|| '未知'}}</text>
+      </view>
+      <!-- 操作按钮 -->
+      <view class="actions">
+        <button class="edit-btn" data-id="{{item.id}}" bindtap="onEditRemark">编辑</button>
+        <button class="delete-btn" data-id="{{item.id}}" bindtap="onDeleteRemark">删除</button>
+      </view>
+    </view>
+  </block>
+</view>

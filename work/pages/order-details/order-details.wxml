@@ -1,0 +1,19 @@
+<view class="order-details-container">
+  <view class="header">
+    <text class="title">订单详情</text>
+  </view>
+
+  <view class="order-info">
+    <text>订单号: {{order.id}}</text>
+    <text>商品名称: {{order.productName}}</text>
+    <text>数量: {{order.quantity}}</text>
+    <text>总价: ¥{{order.totalPrice}}</text>
+    <text>订单状态: {{order.status}}</text>
+    <text>下单时间: {{order.orderTime}}</text>
+  </view>
+
+  <view class="order-actions">
+    <button class="cancel-order" bindtap="cancelOrder">取消订单</button>
+    <button class="reorder" bindtap="reorder">重新下单</button>
+  </view>
+</view>

@@ -1,0 +1,18 @@
+<view class="reviews-container">
+  <text class="section-title">商品评价</text>
+  
+  <!-- 显示已有评价 -->
+  <view wx:for="{{reviews}}" wx:key="id" class="review-item">
+    <text class="review-user">{{item.userName}}:</text>
+    <text class="review-content">{{item.content}}</text>
+  </view>
+
+  <!-- 添加新评价 -->
+  <view class="add-review">
+    <input class="review-input" 
+           placeholder="请输入您的评价" 
+           bindinput="onInputChange" 
+           value="{{newReview}}" />
+    <button bindtap="submitReview" class="submit-btn">发送评价</button>
+  </view>
+</view>

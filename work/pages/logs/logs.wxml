@@ -1,0 +1,23 @@
+<!--logs.wxml-->
+
+<!--scroll-view class="scrollarea" scroll-y type="list">
+  <block wx:for="{{logs}}" wx:key="timeStamp" wx:for-item="log">
+    <view class="log-item">{{index + 1}}. {{log.date}}</view>
+  </block>
+</scroll-view-->
+
+
+<view class="container">
+  <view class="nickname-wrapper">
+    <view class="nickname-label">用户名</view>
+    <input class="nickname-input" placeholder="请输入用户名" value="{{username}}" bindinput="onUsernameInput" />
+  </view>
+  
+  <view class="nickname-wrapper">
+    <view class="nickname-label">密码</view>
+    <input class="nickname-input" placeholder="请输入密码" type="password" value="{{password}}" bindinput="onPasswordInput" />
+  </view>
+  <button bindtap="onLogin">登录</button>
+</view>
+
+

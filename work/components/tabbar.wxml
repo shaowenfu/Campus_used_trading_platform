@@ -1,0 +1,18 @@
+<view class="bottom-tab">
+  <view class="tab-item" bindtap="switchTab" data-page="/pages/home/home">
+    <image src="/images/home.jpg" class="tab-icon" />
+    <text>首页</text>
+  </view>
+  <view class="tab-item" bindtap="switchTab" data-page="/pages/messages/messages">
+    <image src="/images/messages.png" class="tab-icon" />
+    <text>公告信息</text>
+  </view>
+  <view class="tab-item" bindtap="switchTab" data-page="/pages/forum/forum">
+    <image src="/images/forum.png" class="tab-icon" />
+    <text>论坛交流</text>
+  </view>
+  <view class="tab-item" bindtap="switchTab" data-page="/pages/profile/profile">
+    <image src="/images/profile.png" class="tab-icon" />
+    <text>个人中心</text>
+  </view>
+</view>

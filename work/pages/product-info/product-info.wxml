@@ -1,0 +1,57 @@
+<view class="container">
+  <!-- 主内容区域 -->
+  <view class="main-content">
+    <view class="sidebar">
+      <block wx:for="{{categories}}" wx:key="id">
+        <view 
+          class="category-item {{selectedCategoryId === item.id ? 'active' : ''}}" 
+          bindtap="onCategorySelect" 
+          data-id="{{item.id}}">
+          {{item.name}}
+        </view>
+      </block>
+    </view>
+
+    <scroll-view class="products-grid" scroll-y="true">
+      <block wx:for="{{products}}" wx:key="id">
+        <view class="product-card">
+          <image src="{{item.imageUrl}}" class="product-image" mode="aspectFill" />
+          <view class="product-info">
+            <text class="product-name">{{item.name}}</text>
+            <text class="product-price">¥{{item.price}}</text>
+            <text class="product-amount">库存:{{item.amount}}</text>
+            <view class="product-controls">
+              <button class="btn-decrease" bindtap="decreaseQuantity" data-id="{{item.id}}">-</button>
+              <text class="quantity">{{item.quantity || 0}}</text>
+              <button class="btn-increase" bindtap="increaseQuantity" data-id="{{item.id}}">+</button>
+            </view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <!-- 底部购物车栏 -->
+  <view class="cart-bar" bindtap="toggleCart">
+    <text>购物车: {{cartTotalCount}} 件 | 总价: ¥{{cartTotalPrice}}</text>
+  </view>
+
+  <!-- 弹出窗口显示购物车 -->
+  <view class="cart-popup" wx:if="{{showCart}}">
+    <view class="cart-header">
+      <text class="cart-title">购物车</text>
+      <button class="close-btn" bindtap="toggleCart">×</button>
+    </view>
+
+    <scroll-view class="cart-items" scroll-y="true">
+      <block wx:for="{{cart}}" wx:key="id">
+        <view class="cart-item">
+          <text class="cart-item-name">{{item.name}}</text>
+          <text class="cart-item-info">数量: {{item.amount}} | ¥{{item.price*item.amount}}</text>
+        </view>
+      </block>
+    </scroll-view>
+
+    <button class="clear-cart-btn" bindtap="clearCart">清空购物车</button>
+  </view>
+</view>

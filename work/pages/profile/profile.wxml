@@ -1,0 +1,62 @@
+<view class="profile-container">
+  <!-- 用户信息 -->
+  <view class="user-info">
+    <image class="avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+    <text>{{userInfo.nickName}}</text>
+  </view>
+
+  <!-- 商品订单 -->
+  <view class="section">
+    <view class="section-header">
+      <text>商品订单</text>
+    </view>
+    <view class="order-item" bindtap="onNavigate" data-page="order">
+      <text>商品订单</text>
+    </view>
+  </view>
+
+  <!-- 地址管理 -->
+  <view class="section">
+    <view class="section-header">
+      <text>地址管理</text>
+    </view>
+    <view class="address-item" bindtap="onNavigate" data-page="address">
+      <text>管理地址</text>
+    </view>
+  </view>
+
+  <!-- 我的评论 -->
+  <view class="section">
+    <view class="section-header">
+      <text>我的评论</text>
+    </view>
+    <view class="remark-item" bindtap="onNavigate" data-page="remark">
+      <text>查看我的评论</text>
+    </view>
+  </view>
+
+  <!-- 商品信息 -->
+  <view class="section">
+    <view class="section-header">
+      <text>商品信息</text>
+    </view>
+    <view class="product-item" bindtap="onNavigate" data-page="product-info">
+      <text>查看商品信息</text>
+    </view>
+  </view>
+
+  <!-- 商品类型 -->
+  <view class="section">
+    <view class="section-header">
+      <text>商品类型</text>
+    </view>
+    <view class="product-type-item" bindtap="onNavigate" data-page="product-type">
+      <text>查看商品类型</text>
+    </view>
+  </view>
+
+  <!-- 切换登录 -->
+  <view class="logout-button" bindtap="onLogout">
+    <text>切换登录</text>
+  </view>
+</view>

@@ -1,0 +1,10 @@
+<view class="message-container">
+  <block wx:for="{{messages}}" wx:key="id">
+    <view class="message-item" data-id="{{item.id}}" bindtap="onMessageClick">
+      <image class="message-image" src="{{item.image}}" mode="aspectFill"></image>
+      <text class="message-detail">{{item.detail}}</text>
+    </view>
+  </block>
+</view>
+
+<tabbar />
