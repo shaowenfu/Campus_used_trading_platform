@@ -264,7 +264,7 @@ class CategoryManager {
                 
                 console.log('发送添加分类请求，数据：', data);
 
-                const response = await API.request('/admin/category', {
+                const response = await API.request('/admin/category/save', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

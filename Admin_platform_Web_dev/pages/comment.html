@@ -19,18 +19,16 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>商品名称</th>
-                        <th>评分</th>
                         <th>评论内容</th>
-                        <th>评论人</th>
-                        <th>状态</th>
+                        <th>营销人员</th>
+                        <th>用户名</th>
                         <th>评论时间</th>
                         <th>操作</th>
                     </tr>
                 </thead>
                 <tbody id="commentList">
                     <tr>
-                        <td colspan="8" class="text-center">加载中...</td>
+                        <td colspan="6" class="text-center">加载中...</td>
                     </tr>
                 </tbody>
             </table>
@@ -42,43 +40,40 @@
         <div class="pagination" id="pagination"></div>
     </div>
 
-    <!-- 评论详情弹窗 -->
+    <!-- 评论详情模态框 -->
     <div class="modal" id="commentModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modalTitle">评论详情</h3>
+                <h3>评论详情</h3>
                 <span class="close" id="closeModal">&times;</span>
             </div>
             <div class="modal-body">
-                <div class="comment-detail">
-                    <div class="detail-row">
-                        <span class="label">商品名称：</span>
-                        <span id="productName"></span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="label">评分：</span>
-                        <span id="rating" class="rating"></span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="label">评论内容：</span>
-                        <div id="content" class="content"></div>
-                    </div>
-                    <div class="detail-row">
-                        <span class="label">评论人：</span>
-                        <span id="userName"></span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="label">评论时间：</span>
-                        <span id="createTime"></span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="label">状态：</span>
-                        <span id="status"></span>
-                    </div>
+                <div class="detail-row">
+                    <span class="label">用户名：</span>
+                    <span class="content" id="userName"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">评分：</span>
+                    <span class="content rating" id="rating"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">评论内容：</span>
+                    <span class="content" id="content"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">评论时间：</span>
+                    <span class="content" id="createTime"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">状态：</span>
+                    <span class="content" id="status"></span>
                 </div>
             </div>
-            <div class="modal-footer" id="modalFooter">
-                <!-- 根据评论状态动态显示按钮 -->
+            <div class="modal-footer">
+                <button class="btn btn-default" onclick="commentManager.hideModal()">关闭</button>
+                <div class="btn-group" id="actionButtons">
+                    <!-- 动态插入操作按钮 -->
+                </div>
             </div>
         </div>
     </div>

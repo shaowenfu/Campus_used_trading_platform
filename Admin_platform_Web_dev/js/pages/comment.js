@@ -6,6 +6,7 @@ class CommentManager {
         this.searchText = '';
         this.statusFilter = '';
         this.currentComment = null;
+        this.commentList = [];
         
         this.init();
     }
@@ -45,14 +46,14 @@ class CommentManager {
                 ...(this.statusFilter ? { status: this.statusFilter } : {})
             };
 
-            const response = await API.request('/admin/comment/conditionSearch', {
+            const response = await API.request('/admin/remark/list', {
                 method: 'GET',
                 params
             });
-
+            
             if (response.code === 1) {
-                this.total = response.data.total;
-                this.renderComments(response.data.records);
+                this.commentList = response.data;
+                this.renderComments(response.data);
                 this.renderPagination();
             }
         } catch (error) {
@@ -63,26 +64,19 @@ class CommentManager {
 
     renderComments(comments) {
         const tbody = document.getElementById('commentList');
+        console.log('comments', comments);
         if (!comments || comments.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="text-center">暂无数据</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center">暂无数据</td></tr>';
             return;
         }
 
         tbody.innerHTML = comments.map(comment => `
             <tr>
                 <td>${comment.id}</td>
-                <td>${comment.productName}</td>
-                <td>
-                    <span class="rating">${comment.rating}</span>
-                </td>
-                <td class="content-column" title="${comment.content}">${comment.content}</td>
-                <td>${comment.userName}</td>
-                <td>
-                    <span class="status-tag ${comment.status === 1 ? 'status-approved' : 'status-pending'}">
-                        ${comment.status === 1 ? '已审核' : '待审核'}
-                    </span>
-                </td>
-                <td>${this.formatDate(comment.createTime)}</td>
+                <td>${comment.detail}</td>
+                <td>${comment.marketerUsername}</td>
+                <td>${comment.userUsername}</td>
+                <td>${this.formatDate(comment.date)}</td>
                 <td>
                     <div class="btn-group">
                         <button class="btn btn-primary btn-sm" onclick="commentManager.viewComment(${comment.id})">查看</button>
@@ -103,40 +97,38 @@ class CommentManager {
         return '';
     }
 
-    async viewComment(id) {
-        try {
-            const response = await API.request(`/admin/comment/detail/${id}`, {
-                method: 'GET'
-            });
-
-            if (response.code === 1) {
-                this.currentComment = response.data;
-                this.showCommentDetail(response.data);
-            }
-        } catch (error) {
-            console.error('获取评论详情失败:', error);
-            this.showError('获取评论详情失败，请重试');
+    viewComment(id) {
+        const comment = this.commentList.find(item => item.id === id);
+        if (comment) {
+            this.currentComment = comment;
+            this.showCommentDetail(comment);
+        } else {
+            this.showError('未找到评论详情');
         }
     }
 
     showCommentDetail(comment) {
         // 填充评论信息
-        document.getElementById('productName').textContent = comment.productName;
-        document.getElementById('rating').textContent = comment.rating;
-        document.getElementById('content').textContent = comment.content;
-        document.getElementById('userName').textContent = comment.userName;
-        document.getElementById('createTime').textContent = this.formatDate(comment.createTime);
-        document.getElementById('status').textContent = comment.status === 1 ? '已审核' : '待审核';
+        document.getElementById('userName').textContent = comment.userUsername || '-';
+        document.getElementById('content').textContent = comment.detail || '-';
+        document.getElementById('createTime').textContent = this.formatDate(comment.date) || '-';
+        document.getElementById('status').textContent = this.getStatusText(comment.status);
 
-        // 渲染底部按钮
-        const modalFooter = document.getElementById('modalFooter');
-        modalFooter.innerHTML = `
-            <button class="btn btn-default" onclick="commentManager.hideModal()">关闭</button>
-            ${this.renderActionButton(comment)}
-        `;
+        // 渲染操作按钮
+        const actionButtons = document.getElementById('actionButtons');
+        actionButtons.innerHTML = this.renderActionButton(comment);
 
         // 显示模态框
         document.getElementById('commentModal').style.display = 'block';
+    }
+
+    getStatusText(status) {
+        const statusMap = {
+            0: '待审核',
+            1: '已通过',
+            2: '已拒绝'
+        };
+        return statusMap[status] || '未知状态';
     }
 
     async approveComment(id) {
@@ -215,8 +207,7 @@ class CommentManager {
 
     formatDate(dateStr) {
         if (!dateStr) return '';
-        const date = new Date(dateStr);
-        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+        return `${dateStr[0]}-${String(dateStr[1]).padStart(2, '0')}-${String(dateStr[2]).padStart(2, '0')} ${String(dateStr[3]).padStart(2, '0')}:${String(dateStr[4]).padStart(2, '0')}`;
     }
 
     showSuccess(message) {
@@ -231,7 +222,4 @@ class CommentManager {
 }
 
 // 初始化评论管理器
-let commentManager = null;
-document.addEventListener('DOMContentLoaded', () => {
-    commentManager = new CommentManager();
-}); 
+let commentManager = null; 

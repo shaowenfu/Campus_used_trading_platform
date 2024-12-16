@@ -101,7 +101,7 @@ async function loadPage(pageName) {
                 const merchantContent = merchantDoc.querySelector('.merchant-container');
                 
                 if (!merchantContent) {
-                    throw new Error('无法��载商户管理页面内容');
+                    throw new Error('无法加载商户管理页面内容');
                 }
                 
                 pageContainer.innerHTML = merchantContent.outerHTML;
@@ -275,14 +275,14 @@ async function loadPage(pageName) {
                 if (!commentScriptExists) {
                     const script = document.createElement('script');
                     script.src = '/js/pages/comment.js';
+                    script.onload = () => {
+                        // 确保在脚本加载完成后初始化
+                        commentManager = new CommentManager();
+                    };
                     document.body.appendChild(script);
                 } else {
-                    // 如果脚本已存在，直接初始化CommentManager
-                    try {
-                        new CommentManager();
-                    } catch (error) {
-                        console.error('初始化CommentManager失败:', error);
-                    }
+                    // 如果脚本已存在，直接初始化新的CommentManager实例
+                    commentManager = new CommentManager();
                 }
                 break;
                 

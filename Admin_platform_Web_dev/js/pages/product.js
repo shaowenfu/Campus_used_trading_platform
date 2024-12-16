@@ -252,15 +252,19 @@ class ProductManager {
         // }
 
         try {
-            const url = this.editingId ? 
-                `/admin/thing/update` : 
-                '/admin/thing/add';
+            const url = `/admin/thing`;
             
             const response = await API.request(url, {
-                method: 'POST',
+                method: 'PUT',
                 body: JSON.stringify({
-                    ...data,
-                    ...(this.editingId ? { id: this.editingId } : {})
+                    id: this.editingId,
+                    name: data.name || '',
+                    categoryId: parseInt(data.categoryId) || 0,
+                    image: data.imageUrl || '',
+                    price: parseFloat(data.price) || 0,
+                    amount: parseInt(data.stock) || 0,
+                    description: data.description || '',
+                    status: parseInt(data.status) || 1
                 })
             });
 
