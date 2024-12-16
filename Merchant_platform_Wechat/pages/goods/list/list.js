@@ -110,8 +110,13 @@ Page({
       })
       
       if(res.code === 1) {
-        const records = res.data
+        // 处理商品数据，确保图片字段存在且有效
+        const records = res.data.map(item => ({
+          ...item,
+          image: (item.image && item.image.startsWith('http')) ? item.image : 'goods_default.png' // 设置默认图片
+        }))
         const total = records.length
+        
         this.setData({
           goodsList: this.data.queryParams.page === 1 ? records : [...this.data.goodsList, ...records],
           total
@@ -214,7 +219,7 @@ Page({
       
       if(res.code === 1) {
         wx.showToast({
-          title: newStatus === 1 ? '���架成功' : '下架成功'
+          title: newStatus === 1 ? '上架成功' : '下架成功'
         })
         this.getGoodsList()
       } else {

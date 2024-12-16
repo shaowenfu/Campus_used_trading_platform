@@ -110,61 +110,68 @@ Page({
   // 选择图片
   async chooseImage() {
     try {
+      // 选择图片
       const res = await wx.chooseMedia({
         count: 1,
-        mediaType: ['image'],
+        mediaType: ['image'], 
         sizeType: ['compressed'],
         sourceType: ['album', 'camera']
       })
       
       const tempFilePath = res.tempFiles[0].tempFilePath
-      console.log('临时文件路径:', tempFilePath)
+      console.log('选择的临时文件路径:', tempFilePath)
+      
+      // 上传图片到后端
+      const uploadRes = await new Promise((resolve, reject) => {
+        wx.uploadFile({
+          url: `${app.globalData.baseUrl}/marketer/common/upload`,
+          filePath: tempFilePath,
+          name: 'file', // 服务端接收的文件字段名为file
+          header: {
+            'Authorization': wx.getStorageSync('token')
+          },
+          success: (res) => {
+            if(res.statusCode !== 200) {
+              reject(new Error('上传失败'))
+              return
+            }
+            // 解析响应数据
+            let data
+            try {
+              data = JSON.parse(res.data)
+            } catch(e) {
+              reject(new Error('解析响应数据失败'))
+              return
+            }
+            resolve(data)
+          },
+          fail: reject
+        })
+      })
 
-      try {
-        // 使用文件系统管理器保存文件
-        const fs = wx.getFileSystemManager()
-        const saveRes = await new Promise((resolve, reject) => {
-          fs.saveFile({
-            tempFilePath: tempFilePath,
-            success: (res) => resolve(res),
-            fail: (err) => reject(err)
-          })
-        })
-        
-        console.log('保存结果:', saveRes)
-        
-        // 读取图片为base64
-        const base64 = await new Promise((resolve, reject) => {
-          fs.readFile({
-            filePath: saveRes.savedFilePath,
-            encoding: 'base64',
-            success: (res) => resolve(res.data),
-            fail: (err) => reject(err)
-          })
-        })
-        
-        // 构造可展示的图片路径
-        const imageUrl = `data:image/png;base64,${base64}`
-        
-        this.setData({
-          imageUrl: imageUrl,  // 使用base64预览
-          'formData.image': saveRes.savedFilePath  // 存储永久路径
-        })
-        
-        wx.showToast({
-          title: '上传成功'
-        })
-      } catch(err) {
-        console.error('保存图片失败:', err)
-        wx.showToast({
-          title: '保存图片失败',
-          icon: 'none'
-        })
+      console.log('上传响应:', uploadRes)
+      
+      // 验证响应格式
+      if(!uploadRes || uploadRes.code !== 1) {
+        throw new Error(uploadRes?.msg || '上传失败')
       }
-    } catch(e) {
-      console.error('选择图片失败:', e)
+
+      // 获取返回的文件访问路径
+      const imageUrl = uploadRes.data
+      
+      this.setData({
+        imageUrl: imageUrl, // 用于预览显示
+        'formData.image': imageUrl // 保存图片URL
+      })
+
       wx.showToast({
-        title: '图片选择失败',
+        title: '上传成功'
+      })
+
+    } catch(e) {
+      console.error('上传图片失败:', e)
+      wx.showToast({
+        title: e.message || '上传失败',
         icon: 'none'
       })
     }
@@ -172,7 +179,7 @@ Page({
 
   // 表单验证
   validateForm() {
-    const { name, categoryId, price, amount, image } = this.data.formData
+    const { name, categoryId, price, amount} = this.data.formData
     if(!name.trim()) {
       wx.showToast({
         title: '请输入商品名称',
@@ -197,13 +204,6 @@ Page({
     if(!amount || isNaN(amount) || amount <= 0) {
       wx.showToast({
         title: '请输入正确的库存',
-        icon: 'none'
-      })
-      return false
-    }
-    if(!image) {
-      wx.showToast({
-        title: '请上传���品图片',
         icon: 'none'
       })
       return false
@@ -284,7 +284,7 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 生命周期函数--监听页面初次渲染完���
    */
   onReady() {
 

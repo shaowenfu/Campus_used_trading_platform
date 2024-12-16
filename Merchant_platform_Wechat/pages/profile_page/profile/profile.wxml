@@ -2,13 +2,23 @@
 <view class="container">
   <!-- 用户信息卡片 -->
   <view class="user-card">
-    <view class="avatar-wrap" bindtap="changeAvatar">
-      <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill"/>
-      <view class="edit-hint">点击修改</view>
-    </view>
-    <view class="user-info">
-      <view class="name">{{userInfo.name}}</view>
-      <view class="account">账号：{{userInfo.username}}</view>
+    <view class="card-background"></view>
+    <view class="user-content">
+      <view class="avatar-wrap" bindtap="changeAvatar">
+        <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill"/>
+        <view class="edit-hint">更换头像</view>
+      </view>
+      <view class="user-info">
+        <view class="name">{{userInfo.name}}</view>
+        <view class="info-row">
+          <text class="label">账号：</text>
+          <text class="value">{{userInfo.username}}</text>
+        </view>
+        <view class="info-row">
+          <text class="label">手机：</text>
+          <text class="value">{{userInfo.phone}}</text>
+        </view>
+      </view>
     </view>
   </view>
 

@@ -1,5 +1,13 @@
 const app = getApp()
 
+// 将对象转换为 URL 查询字符串
+function objectToQueryString(obj) {
+  return Object.keys(obj)
+    .filter(key => obj[key] !== undefined && obj[key] !== null)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
+    .join('&')
+}
+
 // 封装请求方法
 export const request = (options) => {
   return new Promise((resolve, reject) => {
@@ -19,14 +27,8 @@ export const request = (options) => {
       if(typeof options.data === 'string') {
         console.log('数据已经是字符串格式:', options.data)
       } else {
-        // 如果是对象，转换为表单数据
-        const formData = new URLSearchParams()
-        for(let key in options.data) {
-          if(options.data[key] !== undefined && options.data[key] !== null) {
-            formData.append(key, options.data[key])
-          }
-        }
-        options.data = formData.toString()
+        // 如果是对象，转换为查询字符串
+        options.data = objectToQueryString(options.data)
         console.log('转换后的表单数据:', options.data)
       }
     }

@@ -69,37 +69,39 @@
 
   <!-- 商品列表 -->
   <view class="goods-list">
-    <view 
-      class="goods-item"
-      wx:for="{{goodsList}}"
-      wx:key="id"
-    >
-      <view class="goods-tag" wx:if="{{item.status === 1}}">在售</view>
-      <image class="goods-img" src="{{item.image}}" mode="aspectFill"/>
-      <view class="goods-info">
-        <view class="goods-name">{{item.name}}</view>
-        <view class="goods-category">{{categoryMap[item.categoryId]}}</view>
-        <view class="goods-price">¥{{item.price}}</view>
-        <view class="goods-stock">库存: {{item.amount}}</view>
+    <view class="goods-item" wx:for="{{goodsList}}" wx:key="id">
+      <view class="goods-content">
+        <!-- 添加商品图片 -->
+        <image 
+          class="goods-image" 
+          src="{{item.image || '/assets/images/default-goods.png'}}" 
+          mode="aspectFill"
+          lazy-load
+        />
+        <view class="goods-info">
+          <view class="goods-name">{{item.name}}</view>
+          <view class="goods-category">分类：{{categoryMap[item.categoryId]}}</view>
+          <view class="goods-price">¥{{item.price}}</view>
+          <view class="goods-stock">库存：{{item.amount}}</view>
+          <view class="goods-status {{item.status === 1 ? 'on-sale' : 'off-sale'}}">
+            {{statusMap[item.status]}}
+          </view>
+        </view>
       </view>
       <view class="goods-actions">
         <button 
-          class="btn {{item.status === 1 ? 'btn-warning' : 'btn-primary'}}" 
-          size="mini"
-          bindtap="toggleStatus"
+          class="action-btn edit" 
+          size="mini" 
+          bindtap="goToEdit" 
           data-id="{{item.id}}"
-          data-status="{{item.status}}"
-        >
-          {{item.status === 1 ? '下架' : '上架'}}
-        </button>
+        >编辑</button>
         <button 
-          class="btn btn-primary" 
-          size="mini"
-          bindtap="goToEdit"
-          data-id="{{item.id}}"
-        >
-          编辑
-        </button>
+          class="action-btn {{item.status === 1 ? 'off' : 'on'}}" 
+          size="mini" 
+          bindtap="toggleStatus" 
+          data-id="{{item.id}}" 
+          data-status="{{item.status}}"
+        >{{item.status === 1 ? '下架' : '上架'}}</button>
       </view>
     </view>
 

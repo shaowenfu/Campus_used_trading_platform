@@ -207,53 +207,51 @@ Page({
       })
       
       const tempFilePath = res.tempFiles[0].tempFilePath
-      console.log('临时文件路径:', tempFilePath)
+      
+      // 上传图片
+      const uploadRes = await new Promise((resolve, reject) => {
+        wx.uploadFile({
+          url: `${app.globalData.baseUrl}/marketer/common/upload`,
+          filePath: tempFilePath,
+          name: 'file',
+          header: {
+            'Authorization': wx.getStorageSync('token')
+          },
+          success: (res) => {
+            if(res.statusCode !== 200) {
+              reject(new Error('上传失败'))
+              return
+            }
+            try {
+              const data = JSON.parse(res.data)
+              resolve(data)
+            } catch(e) {
+              reject(new Error('解析响应数据失败'))
+            }
+          },
+          fail: reject
+        })
+      })
 
-      try {
-        // 使用文件系统管理器保存文件
-        const fs = wx.getFileSystemManager()
-        const saveRes = await new Promise((resolve, reject) => {
-          fs.saveFile({
-            tempFilePath: tempFilePath,
-            success: (res) => resolve(res),
-            fail: (err) => reject(err)
-          })
-        })
-        
-        console.log('保存结果:', saveRes)
-        
-        // 读取图片为base64
-        const base64 = await new Promise((resolve, reject) => {
-          fs.readFile({
-            filePath: saveRes.savedFilePath,
-            encoding: 'base64',
-            success: (res) => resolve(res.data),
-            fail: (err) => reject(err)
-          })
-        })
-        
-        // 构造可展示的图片路径
-        const imageUrl = `data:image/png;base64,${base64}`
-        
-        this.setData({
-          imageUrl: imageUrl,  // 使用base64预览
-          'formData.image': saveRes.savedFilePath  // 存储永久路径
-        })
-        
-        wx.showToast({
-          title: '上传成功'
-        })
-      } catch(err) {
-        console.error('保存图片失败:', err)
-        wx.showToast({
-          title: '保存图片失败',
-          icon: 'none'
-        })
+      if(!uploadRes || uploadRes.code !== 1) {
+        throw new Error(uploadRes?.msg || '上传失败')
       }
-    } catch(e) {
-      console.error('选择图片失败:', e)
+
+      const imageUrl = uploadRes.data
+      
+      this.setData({
+        imageUrl: imageUrl,
+        'formData.image': imageUrl
+      })
+
       wx.showToast({
-        title: '图片选择失败',
+        title: '上传成功'
+      })
+
+    } catch(e) {
+      console.error('上传图片失败:', e)
+      wx.showToast({
+        title: e.message || '上传失败',
         icon: 'none'
       })
     }

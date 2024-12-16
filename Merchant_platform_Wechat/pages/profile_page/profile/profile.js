@@ -38,20 +38,28 @@ Page({
         return
       }
 
+      // 从本地存储获取商家ID
+      const marketerId = wx.getStorageSync('userId')
+      if(!marketerId) {
+        throw new Error('未找到商家ID')
+      }
+      console.log('marketerId', marketerId)
       const res = await request({
-        url: '/marketer/info',
+        url: `/marketer/info/${marketerId}`,
         method: 'GET'
       })
       
-      if(res.code === 1) {
+      if(res.code === 1) { // API文档显示成功code为0
         this.setData({
           userInfo: res.data
         })
+      } else {
+        throw new Error(res.msg || '获取商家信息失败')
       }
     } catch(e) {
       console.error('获取商家信息失败', e)
       wx.showToast({
-        title: '获取商家信息失败',
+        title: e.message || '获取商家信息失败',
         icon: 'none'
       })
     }
@@ -103,31 +111,10 @@ Page({
         
         // 构造可展示的图片路径
         const imageUrl = `data:image/png;base64,${base64}`
-
-        // 更新头像
-        const updateRes = await request({
-          url: '/marketer/info/avatar',
-          method: 'PUT',
-          data: {
-            avatar: saveRes.savedFilePath
-          },
-          header: {
-            'content-type': 'application/x-www-form-urlencoded'
-          }
+        this.setData({
+          'userInfo.avatar': imageUrl
         })
-        
-        if(updateRes.code === 1) {
-          this.setData({
-            'userInfo.avatar': imageUrl,  // 使用base64预览
-            'userInfo.avatarPath': saveRes.savedFilePath  // 存储永久路径
-          })
-          wx.showToast({ title: '修改成功' })
-        } else {
-          wx.showToast({
-            title: updateRes.msg || '修改失败',
-            icon: 'none'
-          })
-        }
+        wx.showToast({ title: '修改成功' })
       } catch(err) {
         console.error('保存头像失败:', err)
         wx.showToast({
